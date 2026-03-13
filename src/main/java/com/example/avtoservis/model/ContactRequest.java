@@ -42,6 +42,12 @@ public class ContactRequest {
     @Column(length = 1000)
     private String message;
 
+    // Бажана дата та час запису
+    private LocalDateTime appointmentDate;
+
+    // Дата обробки заявки адміном
+    private LocalDateTime processedAt;
+
     @Column(nullable = false, updatable = false)
     private LocalDateTime createdAt;
 

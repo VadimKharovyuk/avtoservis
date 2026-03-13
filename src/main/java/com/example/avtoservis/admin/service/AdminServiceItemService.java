@@ -25,4 +25,7 @@ public interface AdminServiceItemService {
     PageResponse<ServiceItemResponseDto> getAll(Pageable pageable);
 
     void deleteById(Long id);
+
+
+    List<ServiceItemResponseDto> getLatestServices();
 }

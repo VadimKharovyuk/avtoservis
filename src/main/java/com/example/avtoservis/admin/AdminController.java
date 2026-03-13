@@ -1,5 +1,6 @@
 package com.example.avtoservis.admin;
 
+import com.example.avtoservis.enums.RequestStatus;
 import com.example.avtoservis.repositoty.ContactRequestRepository;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
@@ -18,8 +19,6 @@ public class AdminController {
     private final ServiceItemRepository serviceItemRepository;
      private final ContactRequestRepository contactRequestRepository;
 
-    @Value("${app.base-url}")
-    private String baseUrl;
 
 
     @GetMapping
@@ -27,7 +26,7 @@ public class AdminController {
         model.addAttribute("totalServices", serviceItemRepository.count());
         model.addAttribute("activeServices", serviceItemRepository.countByActiveTrue());
         model.addAttribute("totalViews", serviceItemRepository.sumViews());
-        // model.addAttribute("newRequests", contactRequestRepository.countByStatus(RequestStatus.NEW));
+         model.addAttribute("newRequests", contactRequestRepository.countByStatus(RequestStatus.NEW));
 
 
         return "admin/dashboard";

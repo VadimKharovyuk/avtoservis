@@ -12,7 +12,9 @@ import com.example.avtoservis.util.StorageService;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -29,6 +31,10 @@ public class AdminServiceItemServiceImpl implements AdminServiceItemService {
     private final ServiceItemRepository serviceItemRepository;
     private final ServiceItemMapper serviceItemMapper;
     private final StorageService storageService;
+
+    @Value("${app.home.services-limit:3}")
+    private int servicesLimit;
+
 
     @Override
     @Transactional
@@ -130,6 +136,17 @@ public class AdminServiceItemServiceImpl implements AdminServiceItemService {
 
         serviceItemRepository.delete(entity);
         log.info("Service item deleted: {}", id);
+    }
+
+
+    @Override
+    @Transactional(readOnly = true)
+    public List<ServiceItemResponseDto> getLatestServices() {
+        return serviceItemRepository
+                .findTopByActiveTrueOrderByCreatedAtDesc(PageRequest.of(0, servicesLimit))
+                .stream()
+                .map(serviceItemMapper::toResponse)
+                .toList();
     }
 
     private ServiceItem findEntityById(Long id) {
