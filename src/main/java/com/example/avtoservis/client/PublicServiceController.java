@@ -21,7 +21,7 @@ public class PublicServiceController {
     private final PublicServiceItemService publicServiceItemService;
     private final AdminContactRequestService contactRequestService;
 
-    // --- Деталі послуги за slug (SEO-friendly URL) ---
+
     @GetMapping("/sluzby/{slug}")
     public String serviceDetail(@PathVariable String slug, Model model) {
         ServiceItemResponseDto service = publicServiceItemService.getBySlug(slug);
@@ -29,7 +29,7 @@ public class PublicServiceController {
         return "public/service-detail";
     }
 
-    // --- Форма запису ---
+
     @GetMapping("/objednat")
     public String bookingForm(@RequestParam(required = false) Long service, Model model) {
         ContactRequestCreateDto dto = new ContactRequestCreateDto();
@@ -44,7 +44,7 @@ public class PublicServiceController {
         return "public/booking";
     }
 
-    // --- Відправка заявки ---
+
     @PostMapping("/objednat")
     public String submitBooking(@Valid @ModelAttribute("contactRequest") ContactRequestCreateDto dto,
                                 BindingResult bindingResult,
