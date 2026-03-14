@@ -17,8 +17,7 @@ public interface ServiceItemRepository extends JpaRepository<ServiceItem, Long> 
     @Query("SELECT COALESCE(SUM(s.views), 0) FROM ServiceItem s")
     long sumViews();
 
-
-    List<ServiceItem> findTopByActiveTrueOrderByCreatedAtDesc(Pageable pageable);
+    List<ServiceItem> findByActiveTrueOrderByCreatedAtDesc(Pageable pageable);
 
 
     List<ServiceItem> findByActiveTrueOrderByCreatedAtDesc();

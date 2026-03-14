@@ -32,8 +32,7 @@ public class AdminServiceItemServiceImpl implements AdminServiceItemService {
     private final ServiceItemMapper serviceItemMapper;
     private final StorageService storageService;
 
-    @Value("${app.home.services-limit:3}")
-    private int servicesLimit;
+
 
     @Override
     @Transactional
@@ -134,22 +133,16 @@ public class AdminServiceItemServiceImpl implements AdminServiceItemService {
         log.info("Service item deleted: {}", id);
     }
 
-    @Override
-    @Transactional(readOnly = true)
-    public List<ServiceItemResponseDto> getLatestServices() {
-        return serviceItemRepository
-                .findTopByActiveTrueOrderByCreatedAtDesc(PageRequest.of(0, servicesLimit))
-                .stream()
-                .map(serviceItemMapper::toResponse)
-                .toList();
-    }
+
+    @Value("${app.home.services-limit:3}")
+    private int servicesLimit;
 
     // Для публічної частини — з мовою
     @Override
     @Transactional(readOnly = true)
     public List<ServiceItemResponseDto> getLatestServices(Language language) {
         return serviceItemRepository
-                .findTopByActiveTrueOrderByCreatedAtDesc(PageRequest.of(0, servicesLimit))
+                .findByActiveTrueOrderByCreatedAtDesc(PageRequest.of(0, servicesLimit))
                 .stream()
                 .map(entity -> serviceItemMapper.toResponse(entity, language))
                 .toList();
@@ -164,6 +157,7 @@ public class AdminServiceItemServiceImpl implements AdminServiceItemService {
                 .map(entity -> serviceItemMapper.toResponse(entity, language))
                 .toList();
     }
+
 
     private ServiceItem findEntityById(Long id) {
         return serviceItemRepository.findById(id)

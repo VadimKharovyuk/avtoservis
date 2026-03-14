@@ -46,6 +46,7 @@ public class HomeController {
         model.addAttribute("currentLang", language);
         model.addAttribute("languages", Language.getEnabledLanguages());
         model.addAttribute("seo", homePageSeoBuilder.buildHomePageSeo(language));
+
         model.addAttribute("services", serviceItemService.getAllActive(language));
 
 

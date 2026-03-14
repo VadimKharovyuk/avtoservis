@@ -11,6 +11,7 @@
 
     <link rel="stylesheet" th:href="@{/css/mavMain.css}">
     <link rel="stylesheet" th:href="@{/css/service-detail.css}">
+    <link rel="stylesheet" th:href="@{/css/footer.css}">
 
 </head>
 <body>
@@ -171,6 +172,148 @@
     </div>
 
 </div>
+
+<footer class="footer pt-5">
+    <div class="container">
+
+        <!-- CTA Banner -->
+        <div class="footer-cta mb-5 reveal">
+            <div class="row align-items-center g-4">
+                <div class="col-lg-7">
+                    <h3 class="footer-cta-title mb-2">
+                        <span th:text="#{footer.cta.line1}">Потрібен ремонт?</span>
+                        <span class="text-accent" th:text="#{footer.cta.line2}">Запишіться зараз</span>
+                    </h3>
+                    <p class="footer-cta-sub mb-0" th:text="#{footer.cta.sub}">
+                        Залиште заявку онлайн або зателефонуйте — ми працюємо Пн–Сб
+                    </p>
+                </div>
+                <div class="col-lg-5 d-flex gap-3 justify-content-lg-end flex-wrap">
+                    <a th:href="@{/{lang}/objednat(lang=${currentLang.code})}" class="btn-footer-cta d-inline-flex align-items-center gap-2">
+                        <i class="bi bi-calendar-check"></i>
+                        <span th:text="#{footer.cta.book}">Записатись</span>
+                    </a>
+                    <a href="tel:+420776485550" class="btn-footer-phone d-inline-flex align-items-center gap-2">
+                        <i class="bi bi-telephone-fill"></i>
+                        +420 776 485 550
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <!-- Main Footer Grid -->
+        <div class="row g-4 g-lg-5 pb-5">
+
+            <!-- Col 1: Brand -->
+            <div class="col-lg-4 col-md-6">
+                <a th:href="@{/{lang}(lang=${currentLang.code})}" class="footer-logo mb-3 d-inline-flex">
+                    <div class="footer-logo-box">
+                        <i class="bi bi-wrench-adjustable-circle"></i>
+                    </div>
+                    <span>EN-motors</span>
+                </a>
+                <p class="footer-desc mt-3 mb-4" th:text="#{footer.desc}">
+                    Професійний автосервіс у Брно. Діагностика, ремонт та обслуговування сучасних автомобілів з гарантією якості.
+                </p>
+                <div class="d-flex gap-2">
+                    <a href="#" class="social-link" aria-label="Facebook"><i class="bi bi-facebook"></i></a>
+                    <a href="#" class="social-link" aria-label="Instagram"><i class="bi bi-instagram"></i></a>
+                    <a href="#" class="social-link" aria-label="WhatsApp"><i class="bi bi-whatsapp"></i></a>
+                    <a href="#" class="social-link" aria-label="Google"><i class="bi bi-google"></i></a>
+                </div>
+            </div>
+
+            <!-- Col 2: Navigation -->
+            <div class="col-lg-2 col-md-6 col-6">
+                <div class="footer-heading" th:text="#{footer.nav.title}">Навігація</div>
+                <nav>
+                    <a th:href="@{/{lang}(lang=${currentLang.code})}"
+                       class="footer-link" th:text="#{nav.home}">Головна</a>
+                    <a th:href="@{/{lang}#services(lang=${currentLang.code})}"
+                       class="footer-link" th:text="#{nav.services}">Послуги</a>
+                    <a th:href="@{/{lang}#why(lang=${currentLang.code})}"
+                       class="footer-link" th:text="#{nav.why}">Переваги</a>
+                    <a th:href="@{/{lang}#about(lang=${currentLang.code})}"
+                       class="footer-link" th:text="#{footer.nav.about}">Про нас</a>
+                    <a th:href="@{/{lang}#contact(lang=${currentLang.code})}"
+                       class="footer-link" th:text="#{nav.contact}">Контакти</a>
+                    <a th:href="@{/{lang}/objednat(lang=${currentLang.code})}"
+                       class="footer-link" th:text="#{nav.book}">Записатись</a>
+                </nav>
+            </div>
+
+            <!-- Col 3: Services quick links -->
+            <div class="col-lg-2 col-md-6 col-6">
+                <div class="footer-heading" th:text="#{footer.services.title}">Послуги</div>
+                <nav>
+                    <a href="#services" class="footer-link" th:text="#{footer.svc1}">Діагностика</a>
+                    <a href="#services" class="footer-link" th:text="#{footer.svc2}">Заміна масла</a>
+                    <a href="#services" class="footer-link" th:text="#{footer.svc3}">Гальма</a>
+                    <a href="#services" class="footer-link" th:text="#{footer.svc4}">Трансмісія</a>
+                    <a href="#services" class="footer-link" th:text="#{footer.svc5}">Шиномонтаж</a>
+                    <a href="#services" class="footer-link" th:text="#{footer.svc6}">Електрика</a>
+                </nav>
+            </div>
+
+            <!-- Col 4: Contact + Hours -->
+            <div class="col-lg-4 col-md-6">
+                <div class="footer-heading" th:text="#{footer.contact.title}">Контакти</div>
+
+                <div class="footer-contact-item">
+                    <i class="bi bi-geo-alt-fill"></i>
+                    <span th:text="#{contact.info.addressVal}">Vídeňská 120, 619 00 Brno</span>
+                </div>
+                <div class="footer-contact-item">
+                    <i class="bi bi-telephone-fill"></i>
+                    <a href="tel:+420776485550">+420 776 485 550</a>
+                </div>
+                <div class="footer-contact-item">
+                    <i class="bi bi-envelope-fill"></i>
+                    <a href="mailto:info@en-motors.cz">info@en-motors.cz</a>
+                </div>
+
+                <div class="mt-3">
+                    <div class="footer-heading mb-2" th:text="#{footer.hours.title}">Графік</div>
+                    <div class="footer-hours">
+                        <span th:text="#{contact.hours.weekdays}">Пн — Пт</span>: <strong>8:00 — 18:00</strong><br>
+                        <span th:text="#{contact.hours.saturday}">Сб</span>: <strong>9:00 — 14:00</strong><br>
+                        <span th:text="#{contact.hours.sunday}">Нд</span>:
+                        <strong style="color:rgba(248,113,113,0.7);" th:text="#{contact.hours.closed}">Зачинено</strong>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+        <!-- Bottom Bar -->
+        <div class="footer-bottom py-4">
+            <div class="d-flex align-items-center justify-content-between flex-wrap gap-3">
+                <div class="footer-copy">
+                    © <span th:text="${#dates.format(#dates.createNow(), 'yyyy')}">2026</span>
+                    EN-motors.
+                    <span th:text="#{footer.rights}">Всі права захищені.</span>
+                </div>
+                <div class="footer-bottom-links">
+                    <a href="#" th:text="#{footer.privacy}">Політика конфіденційності</a>
+                    <a href="#" th:text="#{footer.terms}">Умови використання</a>
+                </div>
+                <a href="#" class="back-to-top" aria-label="Back to top">
+                    <i class="bi bi-arrow-up"></i>
+                </a>
+            </div>
+        </div>
+
+    </div>
+</footer>
+
+
+<!-- Smooth scroll to top -->
+<script>
+    document.querySelector('.back-to-top')?.addEventListener('click', function(e) {
+        e.preventDefault();
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+    });
+</script>
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 </body>
