@@ -3,6 +3,7 @@ package com.example.avtoservis.client;
 import com.example.avtoservis.admin.service.AdminServiceItemService;
 import com.example.avtoservis.dto.ServiceItemResponseDto;
 import com.example.avtoservis.enums.Language;
+import com.example.avtoservis.seo.HomePageSeoBuilder;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -15,6 +16,7 @@ import java.util.List;
 @Controller
 public class HomeController {
      private final AdminServiceItemService serviceItemService ;
+     private final HomePageSeoBuilder homePageSeoBuilder;
 
     @GetMapping("")
     public String root() {
@@ -28,6 +30,9 @@ public class HomeController {
         model.addAttribute("items", list);
         model.addAttribute("currentLang", language);
         model.addAttribute("languages", Language.getEnabledLanguages());
+
+        model.addAttribute("languages", Language.getEnabledLanguages());
+        model.addAttribute("seo", homePageSeoBuilder.buildHomePageSeo(language));
         return "home";
     }
 }

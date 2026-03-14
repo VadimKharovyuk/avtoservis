@@ -6,6 +6,34 @@
     <title>EN-motors | Autoservis Brno</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" rel="stylesheet">
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title th:text="${seo.title}">EN-motors</title>
+    <meta name="description" th:content="${seo.description}">
+    <meta name="keywords" th:content="${seo.keywords}">
+    <meta name="robots" th:content="${seo.robots}">
+    <meta name="author" th:content="${seo.author}">
+    <meta name="theme-color" th:content="${seo.themeColor}">
+    <link rel="canonical" th:href="${seo.canonicalUrl}">
+
+    <!-- Open Graph -->
+    <meta property="og:title" th:content="${seo.ogTitle}">
+    <meta property="og:description" th:content="${seo.ogDescription}">
+    <meta property="og:url" th:content="${seo.ogUrl}">
+    <meta property="og:type" th:content="${seo.ogType}">
+    <meta property="og:image" th:content="${seo.ogImage}">
+    <meta property="og:image:alt" th:content="${seo.ogImageAlt}">
+    <meta property="og:site_name" th:content="${seo.ogSiteName}">
+    <meta property="og:locale" th:content="${seo.ogLocale}">
+
+    <!-- Twitter -->
+    <meta name="twitter:card" th:content="${seo.twitterCard}">
+    <meta name="twitter:title" th:content="${seo.twitterTitle}">
+    <meta name="twitter:description" th:content="${seo.twitterDescription}">
+    <meta name="twitter:image" th:content="${seo.twitterImage}">
+    <meta name="twitter:image:alt" th:content="${seo.twitterImageAlt}">
+
     <style>
         .lang-switcher .btn { font-size: .85rem; padding: .25rem .6rem; }
         .lang-switcher .btn.active { font-weight: 600; }
