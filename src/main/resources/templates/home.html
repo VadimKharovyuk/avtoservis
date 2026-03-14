@@ -47,6 +47,149 @@
     <link rel="stylesheet" th:href="@{/css/bookingMain.css}">
     <link rel="stylesheet" th:href="@{/css/footer.css}">
 
+    <!-- ═══════════════════════════════════════════════════════ -->
+    <!-- JSON-LD Schema — вставити в <head> головної сторінки  -->
+    <!-- ═══════════════════════════════════════════════════════ -->
+
+    <!-- 1. AutoRepair (основний бізнес) -->
+    <script type="application/ld+json" th:inline="none">
+        {
+            "@context": "https://schema.org",
+            "@type": "AutoRepair",
+            "name": "EN-motors",
+            "url": "https://enmotors.com",
+            "logo": "https://enmotors.com/images/logo.png",
+            "image": "https://enmotors.com/images/workshop.jpg",
+            "description": "Profesionální autoservis v Brně. Diagnostika, opravy a servis všech značek vozidel.",
+            "telephone": "+420776485550",
+            "email": "info@en-motors.cz",
+            "address": {
+                "@type": "PostalAddress",
+                "streetAddress": "Cejl 76, 3. nádvoří",
+                "addressLocality": "Brno",
+                "postalCode": "602 00",
+                "addressRegion": "Jihomoravský kraj",
+                "addressCountry": "CZ"
+            },
+            "geo": {
+                "@type": "GeoCoordinates",
+                "latitude": 49.1992,
+                "longitude": 16.6235
+            },
+            "openingHoursSpecification": [
+                {
+                    "@type": "OpeningHoursSpecification",
+                    "dayOfWeek": ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"],
+                    "opens": "08:00",
+                    "closes": "18:00"
+                },
+                {
+                    "@type": "OpeningHoursSpecification",
+                    "dayOfWeek": "Saturday",
+                    "opens": "09:00",
+                    "closes": "14:00"
+                }
+            ],
+            "priceRange": "$$",
+            "currenciesAccepted": "CZK",
+            "paymentAccepted": "Cash, Credit Card",
+            "areaServed": {
+                "@type": "City",
+                "name": "Brno"
+            },
+            "sameAs": [
+                "https://www.facebook.com/enmotors",
+                "https://www.instagram.com/enmotors",
+                "https://www.google.com/maps/place/EN-motors"
+            ],
+            "aggregateRating": {
+                "@type": "AggregateRating",
+                "ratingValue": "4.9",
+                "reviewCount": "127",
+                "bestRating": "5"
+            },
+            "hasOfferCatalog": {
+                "@type": "OfferCatalog",
+                "name": "Autoservisní služby",
+                "itemListElement": [
+                    {
+                        "@type": "OfferCatalog",
+                        "name": "Diagnostika",
+                        "itemListElement": [
+                            {
+                                "@type": "Offer",
+                                "itemOffered": {
+                                    "@type": "Service",
+                                    "name": "Kompletní diagnostika vozu",
+                                    "description": "Profesionální počítačová diagnostika všech systémů vozidla"
+                                },
+                                "priceSpecification": {
+                                    "@type": "PriceSpecification",
+                                    "price": "490",
+                                    "priceCurrency": "CZK",
+                                    "minPrice": "490"
+                                }
+                            }
+                        ]
+                    },
+                    {
+                        "@type": "OfferCatalog",
+                        "name": "Servis",
+                        "itemListElement": [
+                            {
+                                "@type": "Offer",
+                                "itemOffered": {
+                                    "@type": "Service",
+                                    "name": "Výměna oleje",
+                                    "description": "Kompletní výměna motorového oleje a olejového filtru"
+                                },
+                                "priceSpecification": {
+                                    "@type": "PriceSpecification",
+                                    "price": "890",
+                                    "priceCurrency": "CZK",
+                                    "minPrice": "890"
+                                }
+                            }
+                        ]
+                    }
+                ]
+            }
+        }
+    </script>
+
+    <!-- 2. WebSite (пошукова строка в Google) -->
+    <script type="application/ld+json" th:inline="none">
+        {
+            "@context": "https://schema.org",
+            "@type": "WebSite",
+            "name": "EN-motors",
+            "url": "https://enmotors.com",
+            "inLanguage": ["cs", "uk", "en"],
+            "potentialAction": {
+                "@type": "SearchAction",
+                "target": "https://enmotors.com/cs?q={search_term_string}",
+                "query-input": "required name=search_term_string"
+            }
+        }
+    </script>
+
+    <!-- 3. BreadcrumbList (хлібні крихти) -->
+    <script type="application/ld+json"
+            th:with="lang=${currentLang.code}"
+            th:inline="javascript">
+        {
+            "@context": "https://schema.org",
+            "@type": "BreadcrumbList",
+            "itemListElement": [
+                {
+                    "@type": "ListItem",
+                    "position": 1,
+                    "name": "EN-motors",
+                    "item": /*[[ 'https://enmotors.com/' + ${currentLang.code} ]]*/ "https://enmotors.com/cs"
+                }
+            ]
+        }
+    </script>
 
 </head>
 <body>
