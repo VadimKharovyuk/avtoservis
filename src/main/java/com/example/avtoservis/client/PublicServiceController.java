@@ -7,12 +7,15 @@ import com.example.avtoservis.enums.RequestType;
 
 import com.example.avtoservis.admin.service.AdminContactRequestService;
 import com.example.avtoservis.service.PublicServiceItemService;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.LocaleResolver;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 @Controller
@@ -21,21 +24,34 @@ public class PublicServiceController {
 
     private final PublicServiceItemService publicServiceItemService;
     private final AdminContactRequestService contactRequestService;
+    private final LocaleResolver localeResolver;
 
     @GetMapping("/{lang}/sluzby/{slug}")
     public String serviceDetail(@PathVariable String lang,
                                 @PathVariable String slug,
-                                Model model) {
+                                Model model,
+                                HttpServletRequest request,
+                                HttpServletResponse response) {
         Language language = Language.fromCode(lang);
+        localeResolver.setLocale(request, response, language.toLocale());
+
         ServiceItemResponseDto service = publicServiceItemService.getBySlug(slug, language);
         model.addAttribute("service", service);
         model.addAttribute("currentLang", language);
+        model.addAttribute("languages", Language.getEnabledLanguages());
         return "public/service-detail";
     }
 
+    // ── Booking form ──
+    @GetMapping("/{lang}/objednat")
+    public String bookingForm(@PathVariable String lang,
+                              @RequestParam(required = false) Long service,
+                              Model model,
+                              HttpServletRequest request,
+                              HttpServletResponse response) {
+        Language language = Language.fromCode(lang);
+        localeResolver.setLocale(request, response, language.toLocale());
 
-    @GetMapping("/objednat")
-    public String bookingForm(@RequestParam(required = false) Long service, Model model) {
         ContactRequestCreateDto dto = new ContactRequestCreateDto();
         dto.setRequestType(RequestType.SERVICE_ORDER);
 
@@ -45,24 +61,35 @@ public class PublicServiceController {
 
         model.addAttribute("contactRequest", dto);
         model.addAttribute("services", publicServiceItemService.getAllActive());
+        model.addAttribute("requestTypes", RequestType.values());
+        model.addAttribute("currentLang", language);
+        model.addAttribute("languages", Language.getEnabledLanguages());
         return "public/booking";
     }
 
-
-
-    @PostMapping("/objednat")
-    public String submitBooking(@Valid @ModelAttribute("contactRequest") ContactRequestCreateDto dto,
+    // ── Booking submit ──
+    @PostMapping("/{lang}/objednat")
+    public String submitBooking(@PathVariable String lang,
+                                @Valid @ModelAttribute("contactRequest") ContactRequestCreateDto dto,
                                 BindingResult bindingResult,
                                 Model model,
-                                RedirectAttributes redirectAttributes) {
+                                RedirectAttributes redirectAttributes,
+                                HttpServletRequest request,
+                                HttpServletResponse response) {
+        Language language = Language.fromCode(lang);
+        localeResolver.setLocale(request, response, language.toLocale());
+
         if (bindingResult.hasErrors()) {
             model.addAttribute("services", publicServiceItemService.getAllActive());
+            model.addAttribute("requestTypes", RequestType.values());
+            model.addAttribute("currentLang", language);
+            model.addAttribute("languages", Language.getEnabledLanguages());
             return "public/booking";
         }
 
         contactRequestService.create(dto);
         redirectAttributes.addFlashAttribute("success",
                 "Vaše objednávka byla přijata! Budeme vás kontaktovat do 15 minut.");
-        return "redirect:/";
+        return "redirect:/" + lang;
     }
 }

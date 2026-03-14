@@ -1,109 +1,229 @@
 <!DOCTYPE html>
-<html lang="cs" xmlns:th="http://www.thymeleaf.org">
+<html xmlns:th="http://www.thymeleaf.org" th:lang="${currentLang.code}">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Objednat službu | EN-motors</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" rel="stylesheet">
-    <style>
-        body { background: #f0f2f5; }
-        .card { border: none; border-radius: .75rem; box-shadow: 0 1px 3px rgba(0,0,0,.06); }
-    </style>
+
+
+    <link rel="stylesheet" th:href="@{/css/mavMain.css}">
+    <link rel="stylesheet" th:href="@{/css/booking.css}">
 </head>
 <body>
 
-<div class="container py-5" style="max-width: 640px;">
 
-    <div class="mb-4">
-        <a href="/" class="text-decoration-none text-muted">
-            <i class="bi bi-arrow-left me-1"></i> Zpět na hlavní stránku
-        </a>
-    </div>
+<div th:replace="~{fragments/navbar :: navbar}"></div>
 
-    <div class="card">
-        <div class="card-body p-4">
-            <h4 class="fw-bold mb-1">Objednat službu</h4>
-            <p class="text-muted mb-4">Vyplňte formulář a budeme vás kontaktovat do 15 minut</p>
+<div class="container py-5" style="max-width: 1000px;">
 
-            <form th:action="@{/objednat}"
-                  th:object="${contactRequest}"
-                  method="post">
+    <!-- Back -->
+    <a th:href="@{'/' + ${currentLang.code}}"
+       class="back-link mb-4 d-inline-flex fade-in">
+        <i class="bi bi-arrow-left"></i>
+        <span th:text="#{booking.back}">Zpět na hlavní stránku</span>
+    </a>
 
-                <!-- Ім'я -->
-                <div class="mb-3">
-                    <label for="name" class="form-label">Jméno</label>
-                    <input type="text" class="form-control" id="name"
-                           th:field="*{name}"
-                           placeholder="Jan Novák">
-                </div>
+    <div class="row g-4 g-lg-5">
 
-                <!-- Телефон -->
-                <div class="mb-3">
-                    <label for="phone" class="form-label">Telefon <span class="text-danger">*</span></label>
-                    <div class="input-group">
-                        <span class="input-group-text"><i class="bi bi-telephone"></i></span>
-                        <input type="tel" class="form-control" id="phone"
-                               th:field="*{phone}"
-                               th:classappend="${#fields.hasErrors('phone') ? 'is-invalid' : ''}"
-                               placeholder="+420 777 123 456">
-                        <div class="invalid-feedback" th:if="${#fields.hasErrors('phone')}" th:errors="*{phone}"></div>
+        <!-- ══ FORM ══ -->
+        <div class="col-lg-7 fade-in fade-in-d1">
+            <div class="booking-card">
+
+                <!-- Header -->
+                <div class="d-flex align-items-center gap-3 mb-4">
+                    <div class="booking-icon-wrap">
+                        <i class="bi bi-calendar-check"></i>
+                    </div>
+                    <div>
+                        <div class="booking-title" th:text="#{booking.title}">Objednat službu</div>
+                        <div class="booking-sub" th:text="#{booking.subtitle}">Vyplňte formulář a budeme vás kontaktovat do 15 minut</div>
                     </div>
                 </div>
 
-                <!-- Послуга -->
-                <div class="mb-3">
-                    <label for="serviceItemId" class="form-label">Služba</label>
-                    <select class="form-select" id="serviceItemId" th:field="*{serviceItemId}">
-                        <option value="">— Vyberte službu —</option>
-                        <option th:each="s : ${services}"
-                                th:value="${s.id}"
-                                th:text="${s.name + ' — ' + (s.priceFrom ? 'od ' : '') + s.price + ' Kč'}"></option>
-                    </select>
+                <!-- Step bar -->
+                <div class="form-step-bar">
+                    <div class="form-step active"></div>
+                    <div class="form-step active"></div>
+                    <div class="form-step active"></div>
                 </div>
 
-                <!-- Дата та час запису -->
-                <div class="mb-3">
-                    <label for="appointmentDate" class="form-label">Preferovaný termín <span class="text-danger">*</span></label>
-                    <input type="datetime-local" class="form-control" id="appointmentDate"
-                           th:field="*{appointmentDate}"
-                           th:classappend="${#fields.hasErrors('appointmentDate') ? 'is-invalid' : ''}">
-                    <div class="invalid-feedback" th:if="${#fields.hasErrors('appointmentDate')}" th:errors="*{appointmentDate}"></div>
-                    <div class="form-text">Po — Pá: 8:00–18:00, So: 9:00–14:00</div>
+                <form th:action="@{'/' + ${currentLang.code} + '/objednat'}"
+                      th:object="${contactRequest}"
+                      method="post">
+
+                    <!-- Hidden request type -->
+                    <input type="hidden" th:field="*{requestType}">
+
+                    <!-- ─ Section: Kontakt ─ -->
+                    <div class="form-section-label" th:text="#{booking.section.contact}">Kontaktní údaje</div>
+
+                    <div class="row g-3 mb-4">
+                        <!-- Name -->
+                        <div class="col-md-6">
+                            <label class="f-label" th:text="#{booking.name}">Jméno</label>
+                            <input type="text" class="f-input"
+                                   th:field="*{name}"
+                                   th:placeholder="#{booking.name.ph}">
+                        </div>
+
+                        <!-- Phone -->
+                        <div class="col-md-6">
+                            <label class="f-label">
+                                <span th:text="#{booking.phone}">Telefon</span>
+                                <span class="f-required">*</span>
+                            </label>
+                            <div class="phone-group">
+                                <div class="phone-prefix"><i class="bi bi-telephone"></i></div>
+                                <input type="tel" class="f-input"
+                                       th:field="*{phone}"
+                                       th:classappend="${#fields.hasErrors('phone') ? 'is-invalid' : ''}"
+                                       th:placeholder="#{booking.phone.ph}">
+                            </div>
+                            <div th:if="${#fields.hasErrors('phone')}" class="f-error">
+                                <i class="bi bi-exclamation-circle"></i>
+                                <span th:errors="*{phone}"></span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- ─ Section: Služba ─ -->
+                    <div class="form-section-label" th:text="#{booking.section.service}">Služba</div>
+
+                    <div class="row g-3 mb-4">
+                        <!-- Service select -->
+                        <div class="col-md-6">
+                            <label class="f-label" th:text="#{booking.service}">Služba</label>
+                            <select class="f-input" th:field="*{serviceItemId}">
+                                <option value="" th:text="#{booking.service.ph}">— Vyberte službu —</option>
+                                <option th:each="s : ${services}"
+                                        th:value="${s.id}"
+                                        th:text="${s.name + ' — ' + (s.priceFrom ? 'od ' : '') + s.price + ' Kč'}">
+                                </option>
+                            </select>
+                        </div>
+
+                        <!-- Date -->
+                        <div class="col-md-6">
+                            <label class="f-label">
+                                <span th:text="#{booking.date}">Preferovaný termín</span>
+                                <span class="f-required">*</span>
+                            </label>
+                            <input type="datetime-local" class="f-input"
+                                   id="appointmentDate"
+                                   th:field="*{appointmentDate}"
+                                   th:classappend="${#fields.hasErrors('appointmentDate') ? 'is-invalid' : ''}">
+                            <div th:if="${#fields.hasErrors('appointmentDate')}" class="f-error">
+                                <i class="bi bi-exclamation-circle"></i>
+                                <span th:errors="*{appointmentDate}"></span>
+                            </div>
+                            <div class="f-hint" th:text="#{booking.date.hint}">Po — Pá: 8:00–18:00, So: 9:00–14:00</div>
+                        </div>
+                    </div>
+
+                    <!-- ─ Section: Poznámka ─ -->
+                    <div class="form-section-label" th:text="#{booking.section.note}">Doplňující informace</div>
+
+                    <div class="mb-4">
+                        <label class="f-label" th:text="#{booking.message}">Poznámka</label>
+                        <textarea class="f-input" rows="3"
+                                  th:field="*{message}"
+                                  th:placeholder="#{booking.message.ph}"></textarea>
+                    </div>
+
+                    <!-- Submit -->
+                    <button type="submit" class="btn-book">
+                        <i class="bi bi-send"></i>
+                        <span th:text="#{booking.submit}">Odeslat objednávku</span>
+                    </button>
+
+                    <div class="privacy-note">
+                        <i class="bi bi-shield-check me-1"></i>
+                        <span th:text="#{booking.privacy}">Vaše údaje zpracováváme pouze za účelem kontaktování</span>
+                    </div>
+
+                </form>
+            </div>
+        </div>
+
+        <!-- ══ SIDEBAR ══ -->
+        <div class="col-lg-5">
+
+            <!-- CTA -->
+            <div class="side-cta mb-4 fade-in fade-in-d2">
+                <div class="side-cta-title" th:text="#{booking.side.title}">Raději zavoláte?</div>
+                <div class="side-cta-sub" th:text="#{booking.side.sub}">Jsme tu pro vás v pracovní dny</div>
+                <a href="tel:+420776485550" class="side-cta-phone">
+                    <i class="bi bi-telephone-fill"></i>
+                    +420 776 485 550
+                </a>
+            </div>
+
+            <!-- Contact info -->
+            <div class="side-info mb-4 fade-in fade-in-d2">
+                <div class="side-info-title" th:text="#{booking.side.info}">Kontakt</div>
+                <div class="side-item">
+                    <div class="side-item-icon"><i class="bi bi-geo-alt-fill"></i></div>
+                    <div>
+                        <div class="side-item-label" th:text="#{booking.side.address}">Adresa</div>
+                        <div class="side-item-value">Cejl 76, 3. nádvoří, Brno</div>
+                    </div>
                 </div>
-
-                <!-- Повідомлення -->
-                <div class="mb-4">
-                    <label for="message" class="form-label">Poznámka</label>
-                    <textarea class="form-control" id="message"
-                              th:field="*{message}"
-                              rows="3"
-                              placeholder="Popište problém nebo požadavek..."></textarea>
+                <div class="side-item">
+                    <div class="side-item-icon"><i class="bi bi-clock-fill"></i></div>
+                    <div>
+                        <div class="side-item-label" th:text="#{booking.side.hours}">Otevírací doba</div>
+                        <div class="side-item-value">Po–Pá 8–18, So 9–14</div>
+                    </div>
                 </div>
+                <div class="side-item">
+                    <div class="side-item-icon"><i class="bi bi-envelope-fill"></i></div>
+                    <div>
+                        <div class="side-item-label">Email</div>
+                        <div class="side-item-value">
+                            <a href="mailto:info@en-motors.cz">info@en-motors.cz</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
 
-                <!-- Прихований тип заявки -->
-                <input type="hidden" th:field="*{requestType}">
+            <!-- Trust -->
+            <div class="side-info fade-in fade-in-d3">
+                <div class="side-info-title" th:text="#{booking.side.why}">Proč EN-motors</div>
+                <div class="trust-row">
+                    <i class="bi bi-check-circle-fill"></i>
+                    <span th:text="#{booking.trust1}">Odpověď do 15 minut</span>
+                </div>
+                <div class="trust-row">
+                    <i class="bi bi-check-circle-fill"></i>
+                    <span th:text="#{booking.trust2}">Certifikovaní mechanici</span>
+                </div>
+                <div class="trust-row">
+                    <i class="bi bi-check-circle-fill"></i>
+                    <span th:text="#{booking.trust3}">Záruka na veškerou práci</span>
+                </div>
+                <div class="trust-row">
+                    <i class="bi bi-check-circle-fill"></i>
+                    <span th:text="#{booking.trust4}">Transparentní ceny bez skrytých poplatků</span>
+                </div>
+                <div class="trust-row">
+                    <i class="bi bi-check-circle-fill"></i>
+                    <span th:text="#{booking.trust5}">Originální náhradní díly</span>
+                </div>
+            </div>
 
-                <button type="submit" class="btn btn-primary w-100 py-2">
-                    <i class="bi bi-send me-1"></i> Odeslat objednávku
-                </button>
-            </form>
         </div>
     </div>
-
-    <p class="text-center text-muted small mt-3">
-        <i class="bi bi-shield-check me-1"></i>
-        Vaše údaje zpracováváme pouze za účelem kontaktování
-    </p>
 </div>
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 <script>
-    // Мінімальна дата — завтра 8:00
+    // Min date — tomorrow 8:00
     const now = new Date();
     now.setDate(now.getDate() + 1);
     now.setHours(8, 0, 0, 0);
-    document.getElementById('appointmentDate').min = now.toISOString().slice(0, 16);
+    const el = document.getElementById('appointmentDate');
+    if (el) el.min = now.toISOString().slice(0, 16);
 </script>
 </body>
 </html>

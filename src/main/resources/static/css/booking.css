@@ -1,0 +1,378 @@
+
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap');
+
+:root {
+    --accent: #f97316;
+    --accent-hover: #fb923c;
+    --accent-glow: rgba(249,115,22,0.35);
+    --bg: #0a0a0a;
+    --bg-card: #141414;
+    --text: #f5f5f5;
+    --text-sub: rgba(255,255,255,0.5);
+    --border: rgba(255,255,255,0.06);
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+body {
+    font-family: 'Inter', -apple-system, sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    -webkit-font-smoothing: antialiased;
+}
+
+/* ── Back Link ── */
+.back-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    color: var(--text-sub);
+    text-decoration: none;
+    font-size: 0.85rem;
+    font-weight: 500;
+    transition: all 0.3s;
+}
+
+.back-link i { transition: transform 0.3s; }
+.back-link:hover { color: var(--text); }
+.back-link:hover i { transform: translateX(-4px); }
+
+/* ── Form Card ── */
+.booking-card {
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: 20px;
+    padding: 40px 36px;
+    position: relative;
+    overflow: hidden;
+}
+
+.booking-card::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 2px;
+    background: linear-gradient(90deg, transparent, var(--accent), transparent);
+    opacity: 0.6;
+}
+
+.booking-title {
+    font-size: 1.6rem;
+    font-weight: 800;
+    letter-spacing: -0.5px;
+}
+
+.booking-sub {
+    font-size: 0.9rem;
+    color: var(--text-sub);
+}
+
+.booking-icon-wrap {
+    width: 52px;
+    height: 52px;
+    border-radius: 14px;
+    background: rgba(249,115,22,0.08);
+    border: 1px solid rgba(249,115,22,0.1);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.3rem;
+    color: var(--accent);
+    flex-shrink: 0;
+}
+
+/* ── Step indicator ── */
+.form-step-bar {
+    display: flex;
+    gap: 6px;
+    margin-bottom: 32px;
+}
+
+.form-step {
+    flex: 1;
+    height: 3px;
+    border-radius: 3px;
+    background: rgba(255,255,255,0.06);
+}
+
+.form-step.active {
+    background: var(--accent);
+    box-shadow: 0 0 8px rgba(249,115,22,0.3);
+}
+
+/* ── Section divider ── */
+.form-section-label {
+    font-size: 0.7rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    color: rgba(255,255,255,0.25);
+    padding-bottom: 8px;
+    border-bottom: 1px solid var(--border);
+    margin-bottom: 16px;
+}
+
+/* ── Form Controls ── */
+.f-label {
+    font-size: 0.78rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.8px;
+    color: var(--text-sub);
+    margin-bottom: 6px;
+    display: flex;
+    align-items: center;
+    gap: 4px;
+}
+
+.f-required { color: var(--accent); }
+
+.f-input {
+    background: rgba(255,255,255,0.04) !important;
+    border: 1px solid rgba(255,255,255,0.08) !important;
+    border-radius: 10px !important;
+    color: var(--text) !important;
+    padding: 13px 16px !important;
+    font-size: 0.92rem !important;
+    transition: all 0.3s !important;
+    width: 100%;
+}
+
+.f-input::placeholder { color: rgba(255,255,255,0.2) !important; }
+
+.f-input:focus {
+    background: rgba(255,255,255,0.06) !important;
+    border-color: var(--accent) !important;
+    box-shadow: 0 0 0 3px rgba(249,115,22,0.1) !important;
+    outline: none !important;
+}
+
+.f-input.is-invalid {
+    border-color: rgba(248,113,113,0.5) !important;
+}
+
+.f-input.is-invalid:focus {
+    box-shadow: 0 0 0 3px rgba(248,113,113,0.1) !important;
+}
+
+/* Select arrow */
+select.f-input {
+    background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3e%3cpath fill='none' stroke='rgba(255,255,255,0.4)' stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='m2 5 6 6 6-6'/%3e%3c/svg%3e") !important;
+    background-repeat: no-repeat !important;
+    background-position: right 14px center !important;
+    background-size: 14px !important;
+    -webkit-appearance: none !important;
+    appearance: none !important;
+    padding-right: 42px !important;
+}
+
+select.f-input option {
+    background: #1a1a1a;
+    color: var(--text);
+}
+
+/* Phone input group */
+.phone-group {
+    display: flex;
+    align-items: stretch;
+    gap: 0;
+}
+
+.phone-prefix {
+    background: rgba(255,255,255,0.06);
+    border: 1px solid rgba(255,255,255,0.08);
+    border-right: none;
+    border-radius: 10px 0 0 10px;
+    padding: 0 14px;
+    display: flex;
+    align-items: center;
+    color: var(--accent);
+    font-size: 1rem;
+}
+
+.phone-group .f-input {
+    border-radius: 0 10px 10px 0 !important;
+}
+
+/* Error */
+.f-error {
+    font-size: 0.78rem;
+    color: #f87171;
+    margin-top: 4px;
+    display: flex;
+    align-items: center;
+    gap: 4px;
+}
+
+.f-error i { font-size: 0.7rem; }
+
+.f-hint {
+    font-size: 0.75rem;
+    color: rgba(255,255,255,0.25);
+    margin-top: 4px;
+}
+
+/* ── Submit ── */
+.btn-book {
+    background: var(--accent);
+    color: #000;
+    border: none;
+    border-radius: 12px;
+    padding: 16px 32px;
+    font-size: 0.95rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.8px;
+    transition: all 0.35s;
+    box-shadow: 0 4px 20px rgba(249,115,22,0.25);
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    cursor: pointer;
+}
+
+.btn-book:hover {
+    background: var(--accent-hover);
+    box-shadow: 0 8px 36px var(--accent-glow);
+    transform: translateY(-2px);
+}
+
+.btn-book:active { transform: translateY(0); }
+
+/* ── Sidebar ── */
+.side-info {
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    padding: 24px;
+}
+
+.side-info-title {
+    font-size: 0.72rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    color: rgba(255,255,255,0.3);
+    margin-bottom: 16px;
+}
+
+.side-item {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 12px 0;
+    border-bottom: 1px solid var(--border);
+}
+
+.side-item:last-child { border-bottom: none; }
+
+.side-item-icon {
+    width: 38px;
+    height: 38px;
+    border-radius: 10px;
+    background: rgba(249,115,22,0.06);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.95rem;
+    color: var(--accent);
+    flex-shrink: 0;
+}
+
+.side-item-label {
+    font-size: 0.75rem;
+    color: rgba(255,255,255,0.3);
+}
+
+.side-item-value {
+    font-size: 0.88rem;
+    font-weight: 600;
+    color: var(--text);
+}
+
+.side-item-value a {
+    color: var(--text);
+    text-decoration: none;
+    transition: color 0.3s;
+}
+
+.side-item-value a:hover { color: var(--accent); }
+
+/* Trust */
+.trust-row {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 8px 0;
+    font-size: 0.82rem;
+    color: var(--text-sub);
+}
+
+.trust-row i { color: var(--accent); font-size: 0.85rem; }
+
+/* CTA box */
+.side-cta {
+    background: linear-gradient(135deg, rgba(249,115,22,0.08) 0%, rgba(249,115,22,0.02) 100%);
+    border: 1px solid rgba(249,115,22,0.12);
+    border-radius: 14px;
+    padding: 24px;
+    text-align: center;
+}
+
+.side-cta-title {
+    font-size: 1rem;
+    font-weight: 700;
+    color: var(--text);
+    margin-bottom: 6px;
+}
+
+.side-cta-sub {
+    font-size: 0.82rem;
+    color: var(--text-sub);
+    margin-bottom: 14px;
+}
+
+.side-cta-phone {
+    font-size: 1.15rem;
+    font-weight: 800;
+    color: var(--text);
+    text-decoration: none;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    transition: color 0.3s;
+}
+
+.side-cta-phone:hover { color: var(--accent); }
+.side-cta-phone i { color: var(--accent); }
+
+/* Privacy */
+.privacy-note {
+    font-size: 0.75rem;
+    color: rgba(255,255,255,0.2);
+    text-align: center;
+    margin-top: 16px;
+}
+
+.privacy-note i { color: rgba(255,255,255,0.15); }
+
+/* ── Animations ── */
+.fade-in {
+    opacity: 0;
+    transform: translateY(20px);
+    animation: fadeIn 0.6s ease-out forwards;
+}
+
+.fade-in-d1 { animation-delay: 0.05s; }
+.fade-in-d2 { animation-delay: 0.12s; }
+.fade-in-d3 { animation-delay: 0.2s; }
+
+@keyframes fadeIn {
+    to { opacity: 1; transform: translateY(0); }
+}
+
+@media (max-width: 576px) {
+    .booking-card { padding: 28px 20px; }
+}

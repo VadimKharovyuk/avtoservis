@@ -186,12 +186,12 @@
 
                     <!-- Buttons -->
                     <div class="mt-auto d-flex gap-2">
-                        <a th:href="@{/{lang}/sluzby/{slug}(lang=${currentLang.code}, slug=${item.slug})}"
+                        <a th:href="@{'/' + ${currentLang.code} + '/sluzby/' + ${item.slug}}"
                            class="btn-card-outline flex-fill text-center text-decoration-none">
                             <i class="bi bi-info-circle me-1"></i>
                             <span th:text="#{services.btn.details}">Детальніше</span>
                         </a>
-                        <a th:href="@{/{lang}/objednat(lang=${currentLang.code}, service=${item.id})}"
+                        <a th:href="@{'/' + ${currentLang.code} + '/objednat?service=' + ${item.id}}"
                            class="btn-card-accent flex-fill text-center text-decoration-none">
                             <i class="bi bi-calendar-check me-1"></i>
                             <span th:text="#{services.btn.book}">Замовити</span>
@@ -228,10 +228,6 @@
 </script>
 
 
-
-
-
-<!-- ════════════ WHY CHOOSE US ════════════ -->
 <section id="why" class="why-section py-5">
     <div class="container py-lg-5">
 
@@ -586,9 +582,7 @@
 
                     <!-- ══ Замінити блок <form> в Contact секції на цей ══ -->
 
-                    <!-- ══ Замінити блок <form> в Contact секції на цей ══ -->
-
-                    <form th:action="@{/objednat}" method="post">
+                    <form th:action="@{'/' + ${currentLang.code} + '/objednat'}" method="post">
 
                         <div class="row g-3">
 
@@ -765,7 +759,7 @@
 </section>
 
 
-<!-- ════════════ FOOTER ════════════ -->
+
 <footer class="footer pt-5">
     <div class="container">
 
