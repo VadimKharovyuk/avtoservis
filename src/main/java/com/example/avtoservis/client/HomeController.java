@@ -16,8 +16,6 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.servlet.LocaleResolver;
 
-import java.text.MessageFormat;
-import java.util.List;
 
 @RequiredArgsConstructor
 @Controller
@@ -48,12 +46,13 @@ public class HomeController {
         model.addAttribute("currentLang", language);
         model.addAttribute("languages", Language.getEnabledLanguages());
         model.addAttribute("seo", homePageSeoBuilder.buildHomePageSeo(language));
+        model.addAttribute("services", serviceItemService.getAllActive(language));
+
 
         model.addAttribute("contactRequest", new ContactRequestCreateDto());
-        model.addAttribute("services", serviceItemService.getAllActive(language));
-        model.addAttribute("requestTypes", RequestType.values());
 
-
+        ContactRequestCreateDto contactRequest = new ContactRequestCreateDto();
+        contactRequest.setRequestType(RequestType.SERVICE_ORDER);
 
         return "home";
     }

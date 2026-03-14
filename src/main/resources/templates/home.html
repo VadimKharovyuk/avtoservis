@@ -603,20 +603,7 @@
                                        required>
                             </div>
 
-                            <!-- Request Type -->
-                            <div class="col-md-6">
-                                <label class="form-dark-label" th:text="#{contact.field.type}">Тип заявки *</label>
-                                <select name="requestType"
-                                        class="form-dark form-dark-select w-100"
-                                        required>
-                                    <option value="" disabled selected
-                                            th:text="#{contact.field.type.ph}">Оберіть тип</option>
-                                    <option th:each="type : ${requestTypes}"
-                                            th:value="${type}"
-                                            th:text="#{${'requestType.' + type.name()}}">
-                                    </option>
-                                </select>
-                            </div>
+                            <input type="hidden" name="requestType" value="SERVICE_ORDER">
 
                             <!-- Service (optional) -->
                             <div class="col-md-6">
