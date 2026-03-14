@@ -16,8 +16,6 @@ public class ServiceItemMapper {
 
     // ===================== ServiceItem =====================
 
-// === В маппері ServiceItemMapper — метод toEntity ===
-
     public ServiceItem toEntity(ServiceItemCreateDto dto) {
         ServiceItem entity = ServiceItem.builder()
                 .price(dto.getPrice())

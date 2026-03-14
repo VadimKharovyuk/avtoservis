@@ -28,7 +28,6 @@ public interface AdminServiceItemService {
     void deleteById(Long id);
 
 
-
     List<ServiceItemResponseDto> getLatestServices();
     List<ServiceItemResponseDto> getLatestServices(Language language);
 }

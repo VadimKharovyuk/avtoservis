@@ -124,6 +124,30 @@ public String create(@Valid @ModelAttribute("serviceItem") ServiceItemCreateDto 
     }
 }
 
+    @GetMapping("/view/{id}")
+    public String viewForm(@PathVariable Long id, Model model) {
+        ServiceItemResponseDto service = adminServiceItemService.getById(id);
+
+        List<Language> languages = Language.getEnabledLanguages();
+        List<ServiceItemTranslationDto> orderedTranslations = new ArrayList<>();
+
+        for (Language lang : languages) {
+            ServiceItemTranslationDto found = service.getTranslations().stream()
+                    .filter(t -> t.getLanguage() == lang)
+                    .findFirst()
+                    .orElse(ServiceItemTranslationDto.builder()
+                            .language(lang)
+                            .build());
+            orderedTranslations.add(found);
+        }
+        service.setTranslations(orderedTranslations);
+
+        model.addAttribute("serviceItem", service);
+        model.addAttribute("languages", languages);
+        return "admin/services/view";
+    }
+
+
     @GetMapping("/edit/{id}")
     public String editForm(@PathVariable Long id, Model model) {
         ServiceItemResponseDto service = adminServiceItemService.getById(id);

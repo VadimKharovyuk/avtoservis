@@ -1,0 +1,238 @@
+<!DOCTYPE html>
+<html lang="uk" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Перегляд послуги | EN-motors Admin</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" rel="stylesheet">
+    <style>
+        body { background: #f0f2f5; }
+        .card { border: none; border-radius: .75rem; box-shadow: 0 1px 3px rgba(0,0,0,.06); }
+        .nav-tabs .nav-link { font-size: .9rem; }
+        .nav-tabs .nav-link.active { font-weight: 600; }
+        .lang-flag { font-size: 1.1rem; margin-right: .35rem; }
+        .info-label { color: #64748b; font-size: .85rem; margin-bottom: .15rem; }
+        .info-value { font-weight: 500; }
+        .photo-preview { width: 100%; max-height: 220px; object-fit: cover; border-radius: .5rem; }
+        .photo-placeholder {
+            width: 100%; height: 160px; border: 2px dashed #dee2e6; border-radius: .5rem;
+            display: flex; align-items: center; justify-content: center; flex-direction: column; color: #adb5bd;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container py-4">
+
+    <!-- Заголовок -->
+    <div class="d-flex align-items-center justify-content-between mb-4">
+        <div class="d-flex align-items-center">
+            <a href="/admin/services" class="btn btn-light me-3">
+                <i class="bi bi-arrow-left"></i>
+            </a>
+            <div>
+                <h4 class="mb-0 fw-bold">Перегляд послуги</h4>
+                <small class="text-muted" th:text="'ID: ' + ${serviceItem.id}"></small>
+            </div>
+        </div>
+        <div class="d-flex gap-2">
+            <a th:href="@{/admin/services/edit/{id}(id=${serviceItem.id})}"
+               class="btn btn-primary btn-sm">
+                <i class="bi bi-pencil me-1"></i> Редагувати
+            </a>
+            <form th:action="@{/admin/services/delete/{id}(id=${serviceItem.id})}"
+                  method="post"
+                  onsubmit="return confirm('Ви впевнені, що хочете видалити цю послугу?')">
+                <button type="submit" class="btn btn-outline-danger btn-sm">
+                    <i class="bi bi-trash me-1"></i> Видалити
+                </button>
+            </form>
+        </div>
+    </div>
+
+    <div class="row g-4">
+
+        <!-- Ліва колонка -->
+        <div class="col-lg-8">
+
+            <!-- Основна інформація -->
+            <div class="card">
+                <div class="card-body p-4">
+                    <h6 class="fw-bold mb-3">Основна інформація</h6>
+                    <div class="row g-3">
+                        <div class="col-sm-4">
+                            <div class="info-label">Ціна</div>
+                            <div class="info-value">
+                                <span th:if="${serviceItem.priceFrom}">від </span>
+                                <span th:text="${#numbers.formatDecimal(serviceItem.price, 0, 'COMMA', 0, 'POINT')}"></span> Kč
+                            </div>
+                        </div>
+                        <div class="col-sm-4">
+                            <div class="info-label">Категорія</div>
+                            <span class="badge rounded-pill"
+                                  th:classappend="${serviceItem.category.name() == 'AUTO_SERVICE' ? 'bg-primary-subtle text-primary' : 'bg-warning-subtle text-warning'}"
+                                  th:text="${serviceItem.categoryDisplayName}"></span>
+                        </div>
+                        <div class="col-sm-4">
+                            <div class="info-label">Стан</div>
+                            <span th:if="${serviceItem.active}" class="badge" style="background:#dcfce7;color:#166534;">Активна</span>
+                            <span th:unless="${serviceItem.active}" class="badge" style="background:#fee2e2;color:#991b1b;">Неактивна</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Переклади (таби) -->
+            <div class="card mt-4">
+                <div class="card-body p-4">
+                    <h6 class="fw-bold mb-3">Переклади</h6>
+
+                    <ul class="nav nav-tabs" role="tablist">
+                        <li class="nav-item" th:each="lang, iter : ${languages}">
+                            <button class="nav-link"
+                                    th:classappend="${iter.index == 0 ? 'active' : ''}"
+                                    th:id="'tab-' + ${lang.code}"
+                                    type="button" role="tab"
+                                    th:attr="data-bs-toggle='tab', data-bs-target='#panel-' + ${lang.code}">
+                                <span class="lang-flag" th:text="${lang.flag}"></span>
+                                <span th:text="${lang.displayName}"></span>
+                                <!-- Індикатор заповнення -->
+                                <i class="bi bi-check-circle-fill text-success ms-1"
+                                   th:if="${serviceItem.translations != null
+                                           && serviceItem.translations.size() > __${iter.index}__
+                                           && serviceItem.translations[__${iter.index}__].name != null
+                                           && !serviceItem.translations[__${iter.index}__].name.isEmpty()}"></i>
+                                <i class="bi bi-circle text-muted ms-1"
+                                   th:unless="${serviceItem.translations != null
+                                               && serviceItem.translations.size() > __${iter.index}__
+                                               && serviceItem.translations[__${iter.index}__].name != null
+                                               && !serviceItem.translations[__${iter.index}__].name.isEmpty()}"></i>
+                            </button>
+                        </li>
+                    </ul>
+
+                    <div class="tab-content pt-3">
+                        <div th:each="lang, iter : ${languages}"
+                             class="tab-pane fade"
+                             th:classappend="${iter.index == 0 ? 'show active' : ''}"
+                             th:id="'panel-' + ${lang.code}"
+                             role="tabpanel">
+
+                            <!-- Перевірка чи є переклад -->
+                            <div th:if="${serviceItem.translations != null
+                                         && serviceItem.translations.size() > __${iter.index}__
+                                         && serviceItem.translations[__${iter.index}__].name != null
+                                         && !serviceItem.translations[__${iter.index}__].name.isEmpty()}">
+
+                                <div class="row g-3 mb-3">
+                                    <div class="col-12">
+                                        <div class="info-label">Назва</div>
+                                        <div class="info-value" th:text="${serviceItem.translations[__${iter.index}__].name}"></div>
+                                    </div>
+                                    <div class="col-12" th:if="${serviceItem.translations[__${iter.index}__].description != null}">
+                                        <div class="info-label">Опис</div>
+                                        <div class="text-muted" th:text="${serviceItem.translations[__${iter.index}__].description}"></div>
+                                    </div>
+                                </div>
+
+                                <!-- SEO -->
+                                <div class="bg-light rounded-3 p-3">
+                                    <div class="small fw-semibold text-muted mb-2">
+                                        <i class="bi bi-search me-1"></i> SEO
+                                    </div>
+                                    <div class="row g-2">
+                                        <div class="col-12" th:if="${serviceItem.translations[__${iter.index}__].slug != null}">
+                                            <div class="info-label">URL</div>
+                                            <code th:text="'/' + ${lang.code} + '/sluzby/' + ${serviceItem.translations[__${iter.index}__].slug}"></code>
+                                        </div>
+                                        <div class="col-12" th:if="${serviceItem.translations[__${iter.index}__].metaTitle != null}">
+                                            <div class="info-label">Meta title</div>
+                                            <div class="small" th:text="${serviceItem.translations[__${iter.index}__].metaTitle}"></div>
+                                        </div>
+                                        <div class="col-12" th:if="${serviceItem.translations[__${iter.index}__].metaDescription != null}">
+                                            <div class="info-label">Meta description</div>
+                                            <div class="small text-muted" th:text="${serviceItem.translations[__${iter.index}__].metaDescription}"></div>
+                                        </div>
+                                        <div class="col-12" th:if="${serviceItem.translations[__${iter.index}__].imageAlt != null}">
+                                            <div class="info-label">Image alt</div>
+                                            <div class="small text-muted" th:text="${serviceItem.translations[__${iter.index}__].imageAlt}"></div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Немає перекладу -->
+                            <div th:unless="${serviceItem.translations != null
+                                             && serviceItem.translations.size() > __${iter.index}__
+                                             && serviceItem.translations[__${iter.index}__].name != null
+                                             && !serviceItem.translations[__${iter.index}__].name.isEmpty()}"
+                                 class="text-center py-4 text-muted">
+                                <i class="bi bi-translate fs-3 d-block mb-2"></i>
+                                <div>Переклад не заповнений</div>
+                                <small>Буде показана чеська версія</small>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Права колонка -->
+        <div class="col-lg-4">
+
+            <!-- Фото -->
+            <div class="card">
+                <div class="card-body p-4">
+                    <h6 class="fw-bold mb-3">Фото</h6>
+                    <img th:if="${serviceItem.imageUrl != null}"
+                         th:src="${serviceItem.imageUrl}"
+                         class="photo-preview">
+                    <div th:unless="${serviceItem.imageUrl != null}" class="photo-placeholder">
+                        <i class="bi bi-image fs-1"></i>
+                        <small>Фото не завантажено</small>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Статистика -->
+            <div class="card mt-4">
+                <div class="card-body p-4">
+                    <h6 class="fw-bold mb-3">Статистика</h6>
+                    <div class="d-flex align-items-center justify-content-between mb-3">
+                        <span class="text-muted small"><i class="bi bi-eye me-1"></i> Перегляди</span>
+                        <span class="fw-bold" th:text="${serviceItem.views}"></span>
+                    </div>
+                    <div class="d-flex align-items-center justify-content-between">
+                        <span class="text-muted small"><i class="bi bi-calendar me-1"></i> Створено</span>
+                        <span class="small" th:text="${#temporals.format(serviceItem.createdAt, 'dd.MM.yyyy HH:mm')}"></span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Дії -->
+            <div class="card mt-4">
+                <div class="card-body p-4">
+                    <h6 class="fw-bold mb-3">Дії</h6>
+                    <div class="d-grid gap-2">
+                        <a th:href="@{/admin/services/edit/{id}(id=${serviceItem.id})}"
+                           class="btn btn-primary btn-sm">
+                            <i class="bi bi-pencil me-1"></i> Редагувати
+                        </a>
+                        <a th:if="${serviceItem.translations != null && !serviceItem.translations.isEmpty() && serviceItem.translations[0].slug != null}"
+                           th:href="@{/{lang}/sluzby/{slug}(lang=${serviceItem.translations[0].language.code}, slug=${serviceItem.translations[0].slug})}"
+                           target="_blank"
+                           class="btn btn-outline-secondary btn-sm">
+                            <i class="bi bi-box-arrow-up-right me-1"></i> Відкрити на сайті
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
