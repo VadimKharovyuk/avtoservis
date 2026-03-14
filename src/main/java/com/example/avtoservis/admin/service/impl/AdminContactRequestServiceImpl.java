@@ -28,6 +28,7 @@ public class AdminContactRequestServiceImpl implements AdminContactRequestServic
     private final ServiceItemRepository serviceItemRepository;
     private final ContactRequestMapper contactRequestMapper;
 
+
     @Override
     @Transactional
     public ContactRequestResponseDto create(ContactRequestCreateDto dto) {
