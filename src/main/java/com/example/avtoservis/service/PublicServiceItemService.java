@@ -7,9 +7,13 @@ import java.util.List;
 
 public interface PublicServiceItemService {
 
-// === Інтерфейс — додати методи ===
 
     ServiceItemResponseDto getBySlug(String slug, Language language);
 
     List<ServiceItemResponseDto> getAllActive();
+
+
+
+    List<ServiceItemResponseDto> getAllActive(Language language);
+
 }

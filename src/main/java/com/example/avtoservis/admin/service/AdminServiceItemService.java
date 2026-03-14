@@ -5,6 +5,7 @@ import com.example.avtoservis.dto.ServiceItemResponseDto;
 import com.example.avtoservis.dto.ServiceItemUpdateDto;
 import com.example.avtoservis.enums.Language;
 import com.example.avtoservis.util.PageResponse;
+import org.jspecify.annotations.Nullable;
 import org.springframework.data.domain.Pageable;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -30,4 +31,7 @@ public interface AdminServiceItemService {
 
     List<ServiceItemResponseDto> getLatestServices();
     List<ServiceItemResponseDto> getLatestServices(Language language);
+
+
+   List<ServiceItemResponseDto> getAllActive(Language language);
 }

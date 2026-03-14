@@ -42,7 +42,7 @@ public class PublicServiceController {
         return "public/service-detail";
     }
 
-    // ── Booking form ──
+
     @GetMapping("/{lang}/objednat")
     public String bookingForm(@PathVariable String lang,
                               @RequestParam(required = false) Long service,
@@ -60,7 +60,7 @@ public class PublicServiceController {
         }
 
         model.addAttribute("contactRequest", dto);
-        model.addAttribute("services", publicServiceItemService.getAllActive());
+        model.addAttribute("services", publicServiceItemService.getAllActive(language)); // ← з мовою
         model.addAttribute("requestTypes", RequestType.values());
         model.addAttribute("currentLang", language);
         model.addAttribute("languages", Language.getEnabledLanguages());

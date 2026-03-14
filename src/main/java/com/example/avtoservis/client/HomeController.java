@@ -50,8 +50,9 @@ public class HomeController {
         model.addAttribute("seo", homePageSeoBuilder.buildHomePageSeo(language));
 
         model.addAttribute("contactRequest", new ContactRequestCreateDto());
-        model.addAttribute("services", serviceItemService.getLatestServices());
+        model.addAttribute("services", serviceItemService.getAllActive(language));
         model.addAttribute("requestTypes", RequestType.values());
+
 
 
         return "home";

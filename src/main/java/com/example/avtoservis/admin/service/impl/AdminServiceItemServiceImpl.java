@@ -155,6 +155,16 @@ public class AdminServiceItemServiceImpl implements AdminServiceItemService {
                 .toList();
     }
 
+
+    @Override
+    @Transactional
+    public List<ServiceItemResponseDto> getAllActive(Language language) {
+        return serviceItemRepository.findByActiveTrueOrderByCreatedAtDesc()
+                .stream()
+                .map(entity -> serviceItemMapper.toResponse(entity, language))
+                .toList();
+    }
+
     private ServiceItem findEntityById(Long id) {
         return serviceItemRepository.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException(

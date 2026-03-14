@@ -46,4 +46,15 @@ public class PublicServiceItemServiceImpl implements PublicServiceItemService {
                 .toList();
     }
 
+
+    @Override
+    @Transactional
+    public List<ServiceItemResponseDto> getAllActive(Language language) {
+        return serviceItemRepository.findByActiveTrueOrderByCreatedAtDesc()
+                .stream()
+                .map(entity -> serviceItemMapper.toResponse(entity, language))
+                .toList();
+    }
+
+
 }
