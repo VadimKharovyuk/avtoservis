@@ -67,6 +67,7 @@ public class PublicServiceController {
         return "public/booking";
     }
 
+
     // ── Booking submit ──
     @PostMapping("/{lang}/objednat")
     public String submitBooking(@PathVariable String lang,
@@ -88,8 +89,20 @@ public class PublicServiceController {
         }
 
         contactRequestService.create(dto);
-        redirectAttributes.addFlashAttribute("success",
-                "Vaše objednávka byla přijata! Budeme vás kontaktovat do 15 minut.");
-        return "redirect:/" + lang;
+        return "redirect:/" + lang + "/objednat/dekujeme";
+    }
+
+    // ── Thank You page ──
+    @GetMapping("/{lang}/objednat/dekujeme")
+    public String thankYou(@PathVariable String lang,
+                           Model model,
+                           HttpServletRequest request,
+                           HttpServletResponse response) {
+        Language language = Language.fromCode(lang);
+        localeResolver.setLocale(request, response, language.toLocale());
+
+        model.addAttribute("currentLang", language);
+        model.addAttribute("languages", Language.getEnabledLanguages());
+        return "public/thank-you";
     }
 }
