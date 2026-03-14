@@ -30,11 +30,18 @@ public class PublicServiceItemServiceImpl implements PublicServiceItemService {
 
         ServiceItem entity = translation.getServiceItem();
 
-        // Лічильник переглядів
-        entity.setViews(entity.getViews() + 1);
+//        // Лічильник переглядів
+//        entity.setViews(entity.getViews() + 1);
         serviceItemRepository.save(entity);
 
         return serviceItemMapper.toResponse(entity, language);
+    }
+
+
+    @Override
+    @Transactional
+    public void viewServiceItem(Long id) {
+        serviceItemRepository.incrementViews(id);
     }
 
     @Override
@@ -55,6 +62,8 @@ public class PublicServiceItemServiceImpl implements PublicServiceItemService {
                 .map(entity -> serviceItemMapper.toResponse(entity, language))
                 .toList();
     }
+
+
 
 
 }

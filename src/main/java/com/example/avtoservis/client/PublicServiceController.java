@@ -36,6 +36,9 @@ public class PublicServiceController {
         localeResolver.setLocale(request, response, language.toLocale());
 
         ServiceItemResponseDto service = publicServiceItemService.getBySlug(slug, language);
+
+        publicServiceItemService.viewServiceItem(service.getId());
+
         model.addAttribute("service", service);
         model.addAttribute("currentLang", language);
         model.addAttribute("languages", Language.getEnabledLanguages());

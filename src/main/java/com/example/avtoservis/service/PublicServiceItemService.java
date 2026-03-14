@@ -12,8 +12,8 @@ public interface PublicServiceItemService {
 
     List<ServiceItemResponseDto> getAllActive();
 
-
-
     List<ServiceItemResponseDto> getAllActive(Language language);
+
+    void viewServiceItem(Long id);
 
 }
