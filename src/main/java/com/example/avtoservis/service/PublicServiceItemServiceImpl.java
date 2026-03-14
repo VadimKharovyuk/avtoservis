@@ -30,8 +30,6 @@ public class PublicServiceItemServiceImpl implements PublicServiceItemService {
 
         ServiceItem entity = translation.getServiceItem();
 
-//        // Лічильник переглядів
-//        entity.setViews(entity.getViews() + 1);
         serviceItemRepository.save(entity);
 
         return serviceItemMapper.toResponse(entity, language);

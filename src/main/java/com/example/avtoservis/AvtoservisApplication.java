@@ -10,4 +10,5 @@ public class AvtoservisApplication {
         SpringApplication.run(AvtoservisApplication.class, args);
     }
 
+    /// Meta описание null в услугах
 }
