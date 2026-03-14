@@ -1,0 +1,218 @@
+
+    /* ── Services Section ── */
+.services-section {
+    background: #0a0a0a;
+    position: relative;
+    overflow: hidden;
+}
+
+/* Subtle top glow */
+.services-section::before {
+    content: '';
+    position: absolute;
+    top: -200px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 600px;
+    height: 400px;
+    background: radial-gradient(circle, rgba(249,115,22,0.05) 0%, transparent 70%);
+    filter: blur(60px);
+    pointer-events: none;
+}
+
+.section-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 6px 18px;
+    border-radius: 50px;
+    background: rgba(249,115,22,0.08);
+    border: 1px solid rgba(249,115,22,0.15);
+    font-size: 0.72rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    color: var(--accent);
+}
+
+.section-title {
+    font-size: clamp(2rem, 4vw, 3rem);
+    font-weight: 800;
+    letter-spacing: -1px;
+    color: #f5f5f5;
+    line-height: 1.1;
+}
+
+.section-title .text-accent { color: var(--accent); }
+
+.section-subtitle {
+    font-size: 1.05rem;
+    color: rgba(255,255,255,0.5);
+    max-width: 520px;
+}
+
+/* ── Service Card ── */
+.service-card {
+    background: #141414;
+    border: 1px solid rgba(255,255,255,0.06);
+    border-radius: 16px;
+    padding: 32px 28px;
+    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    position: relative;
+    overflow: hidden;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+}
+
+.service-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 2px;
+    background: linear-gradient(90deg, transparent, var(--accent), transparent);
+    opacity: 0;
+    transition: opacity 0.4s;
+}
+
+.service-card:hover {
+    border-color: rgba(249,115,22,0.2);
+    transform: translateY(-6px);
+    box-shadow: 0 20px 60px rgba(0,0,0,0.4), 0 0 40px rgba(249,115,22,0.06);
+}
+
+.service-card:hover::before {
+    opacity: 1;
+}
+
+/* Icon */
+.service-icon-wrap {
+    width: 56px;
+    height: 56px;
+    border-radius: 14px;
+    background: rgba(249,115,22,0.08);
+    border: 1px solid rgba(249,115,22,0.12);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.4rem;
+    color: var(--accent);
+    transition: all 0.4s;
+    flex-shrink: 0;
+}
+
+.service-card:hover .service-icon-wrap {
+    background: var(--accent);
+    color: #000;
+    box-shadow: 0 8px 24px rgba(249,115,22,0.3);
+    border-color: transparent;
+}
+
+/* Card image */
+.service-card-img {
+    width: 100%;
+    height: 160px;
+    object-fit: cover;
+    border-radius: 10px;
+    margin-bottom: 20px;
+    opacity: 0.85;
+    transition: opacity 0.4s;
+}
+
+.service-card:hover .service-card-img {
+    opacity: 1;
+}
+
+.service-card-title {
+    font-size: 1.15rem;
+    font-weight: 700;
+    color: #f5f5f5;
+    letter-spacing: -0.3px;
+}
+
+.service-card-desc {
+    font-size: 0.88rem;
+    color: rgba(255,255,255,0.45);
+    line-height: 1.6;
+}
+
+.service-card-price {
+    font-size: 1.1rem;
+    font-weight: 700;
+    color: var(--accent);
+}
+
+.service-card-price .price-from {
+    font-size: 0.75rem;
+    font-weight: 500;
+    color: rgba(255,255,255,0.4);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+/* Card buttons */
+.btn-card-outline {
+    background: transparent;
+    color: rgba(255,255,255,0.65);
+    border: 1px solid rgba(255,255,255,0.1);
+    border-radius: 8px;
+    padding: 8px 16px;
+    font-size: 0.8rem;
+    font-weight: 600;
+    transition: all 0.3s;
+}
+
+.btn-card-outline:hover {
+    color: #f5f5f5;
+    border-color: rgba(255,255,255,0.25);
+    background: rgba(255,255,255,0.05);
+}
+
+.btn-card-accent {
+    background: var(--accent);
+    color: #000;
+    border: none;
+    border-radius: 8px;
+    padding: 8px 16px;
+    font-size: 0.8rem;
+    font-weight: 700;
+    transition: all 0.3s;
+}
+
+.btn-card-accent:hover {
+    background: var(--accent-hover);
+    color: #000;
+    box-shadow: 0 4px 16px rgba(249,115,22,0.3);
+}
+
+/* Flash alert override for dark theme */
+.alert-success-dark {
+    background: rgba(34,197,94,0.1);
+    border: 1px solid rgba(34,197,94,0.2);
+    color: #4ade80;
+    border-radius: 12px;
+}
+
+.alert-success-dark .btn-close {
+    filter: brightness(0) invert(0.7);
+}
+
+/* Empty state */
+.empty-state {
+    color: rgba(255,255,255,0.4);
+    font-size: 0.95rem;
+}
+
+/* Scroll reveal */
+.reveal {
+    opacity: 0;
+    transform: translateY(30px);
+    transition: all 0.7s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.reveal.visible {
+    opacity: 1;
+    transform: translateY(0);
+}

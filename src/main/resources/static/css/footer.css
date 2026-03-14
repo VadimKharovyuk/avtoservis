@@ -1,0 +1,293 @@
+
+    /* ── Footer ── */
+.footer {
+    background: #0a0a0a;
+    position: relative;
+    overflow: hidden;
+}
+
+.footer::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, rgba(255,255,255,0.06), transparent);
+}
+
+/* ── Top CTA Banner ── */
+.footer-cta {
+    background: linear-gradient(135deg, rgba(249,115,22,0.1) 0%, rgba(249,115,22,0.03) 100%);
+    border: 1px solid rgba(249,115,22,0.12);
+    border-radius: 20px;
+    padding: 40px;
+    position: relative;
+    overflow: hidden;
+}
+
+.footer-cta::before {
+    content: '';
+    position: absolute;
+    top: -80px;
+    right: -80px;
+    width: 250px;
+    height: 250px;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(249,115,22,0.08) 0%, transparent 70%);
+    pointer-events: none;
+}
+
+.footer-cta-title {
+    font-size: clamp(1.4rem, 2.5vw, 1.8rem);
+    font-weight: 800;
+    color: #f5f5f5;
+    letter-spacing: -0.5px;
+}
+
+.footer-cta-title .text-accent { color: var(--accent); }
+
+.footer-cta-sub {
+    font-size: 0.9rem;
+    color: rgba(255,255,255,0.45);
+}
+
+.btn-footer-cta {
+    background: var(--accent);
+    color: #000;
+    border: none;
+    border-radius: 10px;
+    padding: 14px 28px;
+    font-size: 0.85rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.8px;
+    text-decoration: none;
+    transition: all 0.3s;
+    box-shadow: 0 4px 20px rgba(249,115,22,0.25);
+    white-space: nowrap;
+}
+
+.btn-footer-cta:hover {
+    background: var(--accent-hover);
+    color: #000;
+    box-shadow: 0 8px 32px rgba(249,115,22,0.35);
+    transform: translateY(-2px);
+}
+
+.btn-footer-phone {
+    background: rgba(255,255,255,0.05);
+    color: #f5f5f5;
+    border: 1px solid rgba(255,255,255,0.1);
+    border-radius: 10px;
+    padding: 14px 28px;
+    font-size: 0.85rem;
+    font-weight: 700;
+    text-decoration: none;
+    transition: all 0.3s;
+    white-space: nowrap;
+}
+
+.btn-footer-phone:hover {
+    background: rgba(255,255,255,0.08);
+    color: #fff;
+    border-color: rgba(255,255,255,0.2);
+}
+
+/* ── Footer Main Grid ── */
+.footer-heading {
+    font-size: 0.72rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    color: rgba(255,255,255,0.35);
+    margin-bottom: 20px;
+}
+
+.footer-logo {
+    font-size: 1.3rem;
+    font-weight: 800;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    color: #f5f5f5;
+    text-decoration: none;
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.footer-logo-box {
+    width: 34px;
+    height: 34px;
+    border-radius: 8px;
+    background: var(--accent);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.footer-logo-box i {
+    font-size: 0.9rem;
+    color: #000;
+}
+
+.footer-desc {
+    font-size: 0.86rem;
+    color: rgba(255,255,255,0.38);
+    line-height: 1.7;
+}
+
+/* Social icons */
+.social-link {
+    width: 40px;
+    height: 40px;
+    border-radius: 10px;
+    background: rgba(255,255,255,0.04);
+    border: 1px solid rgba(255,255,255,0.06);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: rgba(255,255,255,0.45);
+    font-size: 1rem;
+    text-decoration: none;
+    transition: all 0.3s;
+}
+
+.social-link:hover {
+    background: var(--accent);
+    border-color: transparent;
+    color: #000;
+    transform: translateY(-3px);
+    box-shadow: 0 6px 16px rgba(249,115,22,0.3);
+}
+
+/* Nav links */
+.footer-link {
+    display: block;
+    color: rgba(255,255,255,0.42);
+    text-decoration: none;
+    font-size: 0.88rem;
+    font-weight: 500;
+    padding: 5px 0;
+    transition: all 0.3s;
+    position: relative;
+    padding-left: 0;
+}
+
+.footer-link:hover {
+    color: #f5f5f5;
+    padding-left: 6px;
+}
+
+.footer-link::before {
+    content: '';
+    position: absolute;
+    left: -12px;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 4px;
+    height: 4px;
+    border-radius: 50%;
+    background: var(--accent);
+    opacity: 0;
+    transition: all 0.3s;
+}
+
+.footer-link:hover::before {
+    opacity: 1;
+    left: -8px;
+}
+
+/* Contact info in footer */
+.footer-contact-item {
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+    margin-bottom: 14px;
+}
+
+.footer-contact-item i {
+    color: var(--accent);
+    font-size: 0.9rem;
+    margin-top: 3px;
+    flex-shrink: 0;
+}
+
+.footer-contact-item span,
+.footer-contact-item a {
+    font-size: 0.86rem;
+    color: rgba(255,255,255,0.45);
+    text-decoration: none;
+    transition: color 0.3s;
+    line-height: 1.5;
+}
+
+.footer-contact-item a:hover { color: #f5f5f5; }
+
+/* Hours mini */
+.footer-hours {
+    font-size: 0.84rem;
+    color: rgba(255,255,255,0.4);
+    line-height: 1.8;
+}
+
+.footer-hours strong {
+    color: rgba(255,255,255,0.6);
+    font-weight: 600;
+}
+
+/* ── Bottom Bar ── */
+.footer-bottom {
+    border-top: 1px solid rgba(255,255,255,0.05);
+}
+
+.footer-copy {
+    font-size: 0.78rem;
+    color: rgba(255,255,255,0.25);
+}
+
+.footer-copy a {
+    color: rgba(255,255,255,0.35);
+    text-decoration: none;
+    transition: color 0.3s;
+}
+
+.footer-copy a:hover { color: var(--accent); }
+
+.footer-bottom-links {
+    display: flex;
+    gap: 20px;
+}
+
+.footer-bottom-links a {
+    font-size: 0.78rem;
+    color: rgba(255,255,255,0.25);
+    text-decoration: none;
+    transition: color 0.3s;
+}
+
+.footer-bottom-links a:hover { color: rgba(255,255,255,0.5); }
+
+/* Back to top */
+.back-to-top {
+    width: 42px;
+    height: 42px;
+    border-radius: 10px;
+    background: rgba(255,255,255,0.04);
+    border: 1px solid rgba(255,255,255,0.06);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: rgba(255,255,255,0.4);
+    text-decoration: none;
+    transition: all 0.3s;
+    font-size: 1rem;
+}
+
+.back-to-top:hover {
+    background: var(--accent);
+    border-color: transparent;
+    color: #000;
+    transform: translateY(-3px);
+    box-shadow: 0 6px 16px rgba(249,115,22,0.25);
+}

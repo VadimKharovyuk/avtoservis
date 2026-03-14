@@ -1,0 +1,188 @@
+
+    /* ── Why Section ── */
+.why-section {
+    background: #0e0e0e;
+    position: relative;
+    overflow: hidden;
+}
+
+.why-section::before {
+    content: '';
+    position: absolute;
+    top: 50%;
+    right: -150px;
+    transform: translateY(-50%);
+    width: 500px;
+    height: 500px;
+    background: radial-gradient(circle, rgba(249,115,22,0.04) 0%, transparent 70%);
+    filter: blur(80px);
+    pointer-events: none;
+}
+
+/* ── Image Block ── */
+.why-img-wrap {
+    position: relative;
+    border-radius: 20px;
+    overflow: hidden;
+    height: 100%;
+    min-height: 460px;
+}
+
+.why-img-wrap img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+}
+
+/* Accent corner frame */
+.why-img-frame {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100px;
+    height: 100px;
+    border-left: 3px solid var(--accent);
+    border-bottom: 3px solid var(--accent);
+    border-radius: 0 0 0 20px;
+    pointer-events: none;
+    opacity: 0.5;
+}
+
+/* Experience badge floating on image */
+.why-exp-badge {
+    position: absolute;
+    bottom: 24px;
+    right: 24px;
+    background: rgba(10,10,10,0.8);
+    backdrop-filter: blur(16px);
+    border: 1px solid rgba(255,255,255,0.08);
+    border-radius: 14px;
+    padding: 18px 24px;
+    text-align: center;
+    z-index: 2;
+}
+
+.why-exp-badge .exp-number {
+    font-size: 2.4rem;
+    font-weight: 800;
+    color: var(--accent);
+    line-height: 1;
+    letter-spacing: -1px;
+}
+
+.why-exp-badge .exp-label {
+    font-size: 0.68rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
+    color: rgba(255,255,255,0.5);
+    margin-top: 4px;
+}
+
+/* ── Feature Items ── */
+.why-feature {
+    display: flex;
+    gap: 20px;
+    padding: 22px 24px;
+    border-radius: 14px;
+    background: rgba(255,255,255,0.02);
+    border: 1px solid rgba(255,255,255,0.04);
+    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.why-feature:hover {
+    background: rgba(249,115,22,0.04);
+    border-color: rgba(249,115,22,0.12);
+    transform: translateX(6px);
+}
+
+.why-feature-icon {
+    width: 48px;
+    height: 48px;
+    border-radius: 12px;
+    background: rgba(249,115,22,0.08);
+    border: 1px solid rgba(249,115,22,0.1);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.2rem;
+    color: var(--accent);
+    flex-shrink: 0;
+    transition: all 0.4s;
+}
+
+.why-feature:hover .why-feature-icon {
+    background: var(--accent);
+    color: #000;
+    border-color: transparent;
+    box-shadow: 0 6px 20px rgba(249,115,22,0.3);
+}
+
+.why-feature-title {
+    font-size: 1rem;
+    font-weight: 700;
+    color: #f5f5f5;
+    margin-bottom: 4px;
+    letter-spacing: -0.2px;
+}
+
+.why-feature-desc {
+    font-size: 0.84rem;
+    color: rgba(255,255,255,0.4);
+    line-height: 1.55;
+    margin: 0;
+}
+
+/* ── Bottom Stats Bar ── */
+.why-stats-bar {
+    background: #141414;
+    border: 1px solid rgba(255,255,255,0.05);
+    border-radius: 16px;
+    padding: 32px;
+}
+
+.why-stat-item {
+    text-align: center;
+    padding: 8px 0;
+}
+
+.why-stat-icon {
+    font-size: 1.3rem;
+    color: var(--accent);
+    margin-bottom: 8px;
+}
+
+.why-stat-val {
+    font-size: 1.6rem;
+    font-weight: 800;
+    color: #f5f5f5;
+    letter-spacing: -0.5px;
+    line-height: 1.2;
+}
+
+.why-stat-val span { color: var(--accent); }
+
+.why-stat-label {
+    font-size: 0.7rem;
+    font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
+    color: rgba(255,255,255,0.4);
+    margin-top: 2px;
+}
+
+.why-stat-divider {
+    width: 1px;
+    align-self: stretch;
+    background: rgba(255,255,255,0.06);
+}
+
+@media (max-width: 991px) {
+    .why-img-wrap { min-height: 320px; margin-bottom: 16px; }
+}
+
+@media (max-width: 576px) {
+    .why-stat-divider { display: none; }
+    .why-stat-item { flex: 0 0 50%; }
+}

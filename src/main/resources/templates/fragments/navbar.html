@@ -1,0 +1,112 @@
+
+<!-- ════════════ NAVBAR ════════════ -->
+<nav th:fragment="navbar"
+     class="navbar navbar-expand-lg navbar-dark sticky-top navbar-apex"
+     id="mainNavbar">
+    <div class="container">
+
+        <!-- Logo -->
+        <a class="navbar-brand d-flex align-items-center"
+           th:href="@{/{lang}(lang=${currentLang.code})}">
+            <div class="logo-icon-box me-2">
+                <i class="bi bi-wrench-adjustable-circle"></i>
+            </div>
+            <span>EN-motors</span>
+        </a>
+
+        <!-- Toggler -->
+        <button class="navbar-toggler" type="button"
+                data-bs-toggle="collapse" data-bs-target="#mainNav">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <!-- Collapse -->
+        <div class="collapse navbar-collapse" id="mainNav">
+
+            <!-- Nav Links -->
+            <ul class="navbar-nav me-auto ms-lg-4">
+                <li class="nav-item">
+                    <a class="nav-link"
+                       th:href="@{/{lang}(lang=${currentLang.code})}"
+                       th:text="#{nav.home}">Головна</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link"
+                       th:href="@{/{lang}#services(lang=${currentLang.code})}"
+                       th:text="#{nav.services}">Послуги</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link"
+                       th:href="@{/{lang}#why(lang=${currentLang.code})}"
+                       th:text="#{nav.why}">Переваги</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link"
+                       th:href="@{/{lang}#contact(lang=${currentLang.code})}"
+                       th:text="#{nav.contact}">Контакти</a>
+                </li>
+            </ul>
+
+            <!-- Desktop: phone + lang + CTA -->
+            <div class="d-none d-lg-flex align-items-center gap-3">
+
+                <!-- Phone -->
+                <a href="tel:+420776485550" class="nav-phone d-flex align-items-center gap-2">
+                    <i class="bi bi-telephone-fill"></i>
+                    +420 776 485 550
+                </a>
+
+                <div class="nav-divider"></div>
+
+                <!-- Lang switcher -->
+                <div class="d-flex gap-1">
+                    <a th:each="lang : ${languages}"
+                       th:href="@{/{code}(code=${lang.code})}"
+                       class="lang-btn"
+                       th:classappend="${lang == currentLang ? 'lang-btn-active' : ''}"
+                       th:text="${lang.flag} + ' ' + ${lang.code.toUpperCase()}">
+                    </a>
+                </div>
+
+                <div class="nav-divider"></div>
+
+                <!-- CTA -->
+                <a th:href="@{/{lang}/objednat(lang=${currentLang.code})}"
+                   class="btn btn-nav-accent d-inline-flex align-items-center gap-2">
+                    <i class="bi bi-calendar-check"></i>
+                    <span th:text="#{nav.book}">Записатись</span>
+                </a>
+            </div>
+
+            <!-- Mobile: phone + book + lang -->
+            <div class="d-lg-none mobile-cta-group d-flex flex-column gap-2">
+                <a href="tel:+420776485550" class="btn-mobile-phone text-center d-flex align-items-center justify-content-center gap-2">
+                    <i class="bi bi-telephone-fill"></i>
+                    +420 776 485 550
+                </a>
+                <a th:href="@{/{lang}/objednat(lang=${currentLang.code})}"
+                   class="btn-mobile-book text-center d-flex align-items-center justify-content-center gap-2">
+                    <i class="bi bi-calendar-check"></i>
+                    <span th:text="#{nav.book}">Записатись</span>
+                </a>
+                <div class="mobile-lang-group">
+                    <a th:each="lang : ${languages}"
+                       th:href="@{/{code}(code=${lang.code})}"
+                       class="lang-btn flex-fill text-center"
+                       th:classappend="${lang == currentLang ? 'lang-btn-active' : ''}"
+                       th:text="${lang.flag} + ' ' + ${lang.code.toUpperCase()}">
+                    </a>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</nav>
+
+<!-- Scroll effect script -->
+<script>
+    window.addEventListener('scroll', () => {
+        document.getElementById('mainNavbar')
+            ?.classList.toggle('scrolled', window.scrollY > 50);
+    });
+</script>

@@ -34,77 +34,892 @@
     <meta name="twitter:image" th:content="${seo.twitterImage}">
     <meta name="twitter:image:alt" th:content="${seo.twitterImageAlt}">
 
-    <style>
-        .lang-switcher .btn { font-size: .85rem; padding: .25rem .6rem; }
-        .lang-switcher .btn.active { font-weight: 600; }
-    </style>
+
+    <link rel="stylesheet" th:href="@{/css/heroMain.css}">
+    <link rel="stylesheet" th:href="@{/css/servicesMain.css}">
+    <link rel="stylesheet" th:href="@{/css/why-sectionMian.css}">
+    <link rel="stylesheet" th:href="@{/css/mavMain.css}">
+    <link rel="stylesheet" th:href="@{/css/aboutMain.css}">
+    <link rel="stylesheet" th:href="@{/css/bookingMain.css}">
+    <link rel="stylesheet" th:href="@{/css/footer.css}">
+
+
+
 </head>
 <body>
 
-<!-- Навігація -->
-<nav class="navbar navbar-light bg-white border-bottom">
-    <div class="container d-flex justify-content-between align-items-center">
-        <a class="navbar-brand fw-bold" th:href="@{/{lang}(lang=${currentLang.code})}">
-            EN-motors
-        </a>
+<div th:replace="~{fragments/navbar :: navbar}"></div>
 
-        <!-- Перемикач мов -->
-        <div class="lang-switcher d-flex gap-1">
-            <a th:each="lang : ${languages}"
-               th:href="@{/{code}(code=${lang.code})}"
-               class="btn btn-sm"
-               th:classappend="${lang == currentLang ? 'btn-dark active' : 'btn-outline-secondary'}"
-               th:text="${lang.flag} + ' ' + ${lang.code.toUpperCase()}">
-            </a>
+
+<!-- ════════════ HERO ════════════ -->
+<section class="hero">
+    <!-- Background layers -->
+    <div class="hero-bg"></div>
+    <div class="hero-overlay"></div>
+    <div class="hero-glow"></div>
+
+    <!-- Content -->
+    <div class="container position-relative" style="z-index: 10;">
+        <div class="row justify-content-center">
+            <div class="col-lg-9 col-xl-8 text-center">
+
+                <!-- Badge -->
+                <div class="mb-4 fade-up fade-up-d1">
+                    <span class="hero-badge" th:text="#{hero.badge}">Професійний автосервіс</span>
+                </div>
+
+                <!-- Title -->
+                <h1 class="hero-title mb-4 fade-up fade-up-d2">
+                    <span th:text="#{hero.titleLine1}">Точний ремонт</span><br>
+                    <span th:text="#{hero.titleLine2Prefix}">та </span>
+                    <span class="text-accent" th:text="#{hero.titleLine2Accent}">обслуговування</span>
+                    <span th:text="#{hero.titleLine2Suffix}"> авто</span>
+                </h1>
+
+                <!-- Subtitle -->
+                <p class="hero-sub mx-auto mb-5 fade-up fade-up-d3"
+                   th:text="#{hero.subtitle}">
+                    Професійна діагностика, ремонт та сервісне обслуговування сучасних автомобілів
+                </p>
+
+                <!-- Buttons -->
+                <div class="d-flex gap-3 justify-content-center flex-wrap mb-5 fade-up fade-up-d4">
+                    <a th:href="@{/{lang}/objednat(lang=${currentLang.code})}"
+                       class="btn btn-accent btn-lg">
+                        <i class="bi bi-calendar-check me-2"></i>
+                        <span th:text="#{hero.cta.primary}">Записатись на сервіс</span>
+                    </a>
+                    <a href="#services" class="btn btn-glass btn-lg">
+                        <span th:text="#{hero.cta.secondary}">Переглянути послуги</span>
+                    </a>
+                </div>
+
+                <!-- Stats -->
+                <div class="d-flex justify-content-center align-items-center gap-4 gap-md-5 flex-wrap hero-stats fade-up fade-up-d5">
+                    <div class="text-center">
+                        <div class="stat-value">12<span>+</span></div>
+                        <div class="stat-label" th:text="#{hero.stat.years}">Років досвіду</div>
+                    </div>
+                    <div class="stat-divider d-none d-sm-block"></div>
+                    <div class="text-center">
+                        <div class="stat-value">5 000<span>+</span></div>
+                        <div class="stat-label" th:text="#{hero.stat.clients}">Задоволених клієнтів</div>
+                    </div>
+                    <div class="stat-divider d-none d-sm-block"></div>
+                    <div class="text-center">
+                        <div class="stat-value">98<span>%</span></div>
+                        <div class="stat-label" th:text="#{hero.stat.reviews}">Позитивних відгуків</div>
+                    </div>
+                </div>
+
+            </div>
         </div>
     </div>
-</nav>
 
-<div class="container py-5">
-
-    <!-- Flash повідомлення -->
-    <div th:if="${success}" class="alert alert-success alert-dismissible fade show mb-4">
-        <i class="bi bi-check-circle me-1"></i> <span th:text="${success}"></span>
-        <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+    <!-- Scroll hint -->
+    <div class="scroll-hint fade-up fade-up-d5">
+        <span th:text="#{hero.scroll}">Гортай</span>
+        <div class="scroll-line"></div>
     </div>
+</section>
 
-    <h1 class="mb-2">EN-motors</h1>
-    <p class="text-muted mb-5">Servis a opravy vozů v centru Brna</p>
 
-    <h4 class="mb-3">Naše služby</h4>
 
-    <div class="row g-3" th:if="${!#lists.isEmpty(items)}">
-        <div class="col-md-4" th:each="item : ${items}">
-            <div class="card h-100">
-                <img th:if="${item.imageUrl != null}"
-                     th:src="${item.imageUrl}"
-                     th:alt="${item.imageAlt}"
-                     class="card-img-top" style="height: 180px; object-fit: cover;">
-                <div class="card-body d-flex flex-column">
-                    <h6 class="fw-bold" th:text="${item.name}"></h6>
-                    <p class="text-muted small mb-2" th:if="${item.description}" th:text="${item.description}"></p>
-                    <span class="fw-bold mb-3">
-                        <span th:if="${item.priceFrom}">od </span>
-                        <span th:text="${item.price}"></span> Kč
-                    </span>
+
+<!-- ════════════ SERVICES ════════════ -->
+<section id="services" class="services-section py-5">
+    <div class="container py-lg-5">
+
+        <!-- Flash message (dark themed) -->
+        <div th:if="${success}" class="alert alert-success-dark alert-dismissible fade show mb-5">
+            <i class="bi bi-check-circle me-2"></i>
+            <span th:text="${success}"></span>
+            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+        </div>
+
+        <!-- Section Header -->
+        <div class="text-center mb-5 reveal">
+            <span class="section-badge mb-3 d-inline-block" th:text="#{services.badge}">Що ми робимо</span>
+            <h2 class="section-title mb-3">
+                <span th:text="#{services.titleLine1}">Наші</span>
+                <span class="text-accent" th:text="#{services.titleLine2}">послуги</span>
+            </h2>
+            <p class="section-subtitle mx-auto" th:text="#{services.subtitle}">
+                Повний спектр послуг для вашого автомобіля — від діагностики до капітального ремонту
+            </p>
+        </div>
+
+        <!-- Services Grid -->
+        <div class="row g-4" th:if="${!#lists.isEmpty(items)}">
+            <div class="col-md-6 col-lg-4" th:each="item, stat : ${items}">
+                <div class="service-card reveal"
+                     th:style="'transition-delay:' + ${stat.index * 0.08} + 's'">
+
+                    <!-- Image (if exists) -->
+                    <img th:if="${item.imageUrl != null}"
+                         th:src="${item.imageUrl}"
+                         th:alt="${item.imageAlt}"
+                         class="service-card-img">
+
+                    <!-- Icon (fallback if no image) -->
+                    <div th:if="${item.imageUrl == null}" class="service-icon-wrap mb-3">
+                        <i class="bi"
+                           th:classappend="${item.icon != null ? item.icon : 'bi-gear-wide-connected'}"></i>
+                    </div>
+
+                    <!-- Title -->
+                    <h5 class="service-card-title mb-2" th:text="${item.name}">Діагностика двигуна</h5>
+
+                    <!-- Description -->
+                    <p class="service-card-desc mb-3"
+                       th:if="${item.description}"
+                       th:text="${item.description}">
+                        Комп'ютерна діагностика всіх систем автомобіля
+                    </p>
+
+                    <!-- Price -->
+                    <div class="service-card-price mb-4">
+            <span th:if="${item.priceFrom}" class="price-from"
+                  th:text="#{services.priceFrom}">від </span>
+                        <span th:text="${item.price}">1 200</span> Kč
+                    </div>
+
+                    <!-- Buttons -->
                     <div class="mt-auto d-flex gap-2">
                         <a th:href="@{/{lang}/sluzby/{slug}(lang=${currentLang.code}, slug=${item.slug})}"
-                           class="btn btn-outline-primary btn-sm flex-fill">
-                            <i class="bi bi-info-circle me-1"></i> Podrobnosti
+                           class="btn-card-outline flex-fill text-center text-decoration-none">
+                            <i class="bi bi-info-circle me-1"></i>
+                            <span th:text="#{services.btn.details}">Детальніше</span>
                         </a>
-                        <a th:href="@{/objednat(service=${item.id})}"
-                           class="btn btn-primary btn-sm flex-fill">
-                            <i class="bi bi-calendar-check me-1"></i> Objednat
+                        <a th:href="@{/{lang}/objednat(lang=${currentLang.code}, service=${item.id})}"
+                           class="btn-card-accent flex-fill text-center text-decoration-none">
+                            <i class="bi bi-calendar-check me-1"></i>
+                            <span th:text="#{services.btn.book}">Замовити</span>
                         </a>
                     </div>
                 </div>
             </div>
         </div>
+
+        <!-- Empty state -->
+        <div th:if="${#lists.isEmpty(items)}" class="text-center py-5">
+            <i class="bi bi-tools d-block mb-3" style="font-size:2.5rem; color: rgba(255,255,255,0.15);"></i>
+            <p class="empty-state" th:text="#{services.empty}">Послуги незабаром з'являться.</p>
+        </div>
+
     </div>
+</section>
 
-    <p th:if="${#lists.isEmpty(items)}" class="text-muted">Zatím žádné služby.</p>
 
-</div>
+<!-- Scroll Reveal Script (додати перед </body> або в загальний JS) -->
+<script>
+    document.addEventListener('DOMContentLoaded', () => {
+        const reveals = document.querySelectorAll('.reveal');
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(e => {
+                if (e.isIntersecting) {
+                    e.target.classList.add('visible');
+                    observer.unobserve(e.target);
+                }
+            });
+        }, { threshold: 0.1 });
+        reveals.forEach(el => observer.observe(el));
+    });
+</script>
+
+<!-- ═══════════════════════════════════════════════════════ -->
+<!-- WHY CHOOSE US — вставити після Services section       -->
+<!-- Потрібно: Bootstrap 5.3, Bootstrap Icons, :root vars  -->
+<!-- ═══════════════════════════════════════════════════════ -->
+
+
+
+
+<!-- ════════════ WHY CHOOSE US ════════════ -->
+<section id="why" class="why-section py-5">
+    <div class="container py-lg-5">
+
+        <!-- Section Header -->
+        <div class="text-center mb-5 reveal">
+            <span class="section-badge mb-3 d-inline-block" th:text="#{why.badge}">Наші переваги</span>
+            <h2 class="section-title mb-3">
+                <span th:text="#{why.titleLine1}">Чому обирають</span>
+                <span class="text-accent" th:text="#{why.titleLine2}">нас</span>
+            </h2>
+            <p class="section-subtitle mx-auto" th:text="#{why.subtitle}">
+                Ми поєднуємо досвід, сучасне обладнання та чесний підхід до кожного клієнта
+            </p>
+        </div>
+
+        <!-- Split Layout -->
+        <div class="row g-4 g-lg-5 align-items-stretch mb-5">
+
+            <!-- Left — Image -->
+            <div class="col-lg-5 reveal">
+                <div class="why-img-wrap">
+                    <img src="https://images.unsplash.com/photo-1625047509248-ec889cbff17f?w=800&q=80"
+                         th:src="${whyImage != null ? whyImage : 'https://images.unsplash.com/photo-1625047509248-ec889cbff17f?w=800&q=80'}"
+                         alt="Професійний механік за роботою"
+                         th:alt="#{why.imageAlt}">
+                    <div class="why-img-frame"></div>
+                    <div class="why-exp-badge">
+                        <div class="exp-number" th:text="#{why.exp.number}">12+</div>
+                        <div class="exp-label" th:text="#{why.exp.label}">Років досвіду</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Right — Features -->
+            <div class="col-lg-7">
+                <div class="d-flex flex-column gap-3">
+
+                    <!-- Feature 1 -->
+                    <div class="why-feature reveal" style="transition-delay:0.05s">
+                        <div class="why-feature-icon">
+                            <i class="bi bi-award"></i>
+                        </div>
+                        <div>
+                            <div class="why-feature-title" th:text="#{why.f1.title}">Сертифіковані механіки</div>
+                            <p class="why-feature-desc" th:text="#{why.f1.desc}">
+                                Наші спеціалісти мають міжнародні сертифікати та регулярно проходять підвищення кваліфікації
+                            </p>
+                        </div>
+                    </div>
+
+                    <!-- Feature 2 -->
+                    <div class="why-feature reveal" style="transition-delay:0.12s">
+                        <div class="why-feature-icon">
+                            <i class="bi bi-cpu"></i>
+                        </div>
+                        <div>
+                            <div class="why-feature-title" th:text="#{why.f2.title}">Сучасне діагностичне обладнання</div>
+                            <p class="why-feature-desc" th:text="#{why.f2.desc}">
+                                Використовуємо професійне обладнання останнього покоління для точної діагностики будь-яких несправностей
+                            </p>
+                        </div>
+                    </div>
+
+                    <!-- Feature 3 -->
+                    <div class="why-feature reveal" style="transition-delay:0.19s">
+                        <div class="why-feature-icon">
+                            <i class="bi bi-lightning-charge"></i>
+                        </div>
+                        <div>
+                            <div class="why-feature-title" th:text="#{why.f3.title}">Швидке виконання робіт</div>
+                            <p class="why-feature-desc" th:text="#{why.f3.desc}">
+                                Цінуємо ваш час — більшість стандартних робіт виконуємо протягом одного дня
+                            </p>
+                        </div>
+                    </div>
+
+                    <!-- Feature 4 -->
+                    <div class="why-feature reveal" style="transition-delay:0.26s">
+                        <div class="why-feature-icon">
+                            <i class="bi bi-shield-check"></i>
+                        </div>
+                        <div>
+                            <div class="why-feature-title" th:text="#{why.f4.title}">Прозоре ціноутворення</div>
+                            <p class="why-feature-desc" th:text="#{why.f4.desc}">
+                                Жодних прихованих платежів — ви завжди знаєте вартість до початку робіт
+                            </p>
+                        </div>
+                    </div>
+
+                    <!-- Feature 5 -->
+                    <div class="why-feature reveal" style="transition-delay:0.33s">
+                        <div class="why-feature-icon">
+                            <i class="bi bi-patch-check"></i>
+                        </div>
+                        <div>
+                            <div class="why-feature-title" th:text="#{why.f5.title}">Гарантія на всі роботи</div>
+                            <p class="why-feature-desc" th:text="#{why.f5.desc}">
+                                Надаємо письмову гарантію на виконані роботи та встановлені запчастини
+                            </p>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+
+        <!-- Bottom Stats Bar -->
+        <div class="why-stats-bar reveal">
+            <div class="d-flex justify-content-center align-items-center flex-wrap gap-4 gap-md-0">
+
+                <div class="why-stat-item flex-fill">
+                    <div class="why-stat-icon"><i class="bi bi-car-front"></i></div>
+                    <div class="why-stat-val">15 000<span>+</span></div>
+                    <div class="why-stat-label" th:text="#{why.stat1}">Авто обслуговано</div>
+                </div>
+
+                <div class="why-stat-divider d-none d-md-block"></div>
+
+                <div class="why-stat-item flex-fill">
+                    <div class="why-stat-icon"><i class="bi bi-people"></i></div>
+                    <div class="why-stat-val">8</div>
+                    <div class="why-stat-label" th:text="#{why.stat2}">Спеціалістів у команді</div>
+                </div>
+
+                <div class="why-stat-divider d-none d-md-block"></div>
+
+                <div class="why-stat-item flex-fill">
+                    <div class="why-stat-icon"><i class="bi bi-tools"></i></div>
+                    <div class="why-stat-val">50<span>+</span></div>
+                    <div class="why-stat-label" th:text="#{why.stat3}">Видів послуг</div>
+                </div>
+
+                <div class="why-stat-divider d-none d-md-block"></div>
+
+                <div class="why-stat-item flex-fill">
+                    <div class="why-stat-icon"><i class="bi bi-clock-history"></i></div>
+                    <div class="why-stat-val">24<span>год</span></div>
+                    <div class="why-stat-label" th:text="#{why.stat4}">Середній час ремонту</div>
+                </div>
+
+            </div>
+        </div>
+
+    </div>
+</section>
+
+<!-- ═══════════════════════════════════════════════════════ -->
+<!-- ABOUT US — вставити після Why Choose Us section       -->
+<!-- Потрібно: Bootstrap 5.3, Bootstrap Icons, :root vars  -->
+<!-- ═══════════════════════════════════════════════════════ -->
+
+
+
+
+<!-- ════════════ ABOUT US ════════════ -->
+<section id="about" class="about-section py-5">
+    <div class="container py-lg-5">
+
+        <!-- Section Header -->
+        <div class="text-center mb-5 reveal">
+            <span class="section-badge mb-3 d-inline-block" th:text="#{about.badge}">Про нас</span>
+            <h2 class="section-title mb-3">
+                <span th:text="#{about.titleLine1}">Наша</span>
+                <span class="text-accent" th:text="#{about.titleLine2}">історія</span>
+            </h2>
+        </div>
+
+        <!-- Main Content: Images + Text -->
+        <div class="row g-4 g-lg-5 align-items-center mb-5">
+
+            <!-- Left — Image Collage -->
+            <div class="col-lg-6 reveal">
+                <div class="about-images">
+                    <div class="about-img-accent"></div>
+                    <div class="about-img-main">
+                        <img src="https://images.unsplash.com/photo-1580273916550-e323be2ae537?w=800&q=80"
+                             th:src="${aboutImage1 != null ? aboutImage1 : 'https://images.unsplash.com/photo-1580273916550-e323be2ae537?w=800&q=80'}"
+                             alt="Майстерня EN-motors"
+                             th:alt="#{about.img1Alt}">
+                    </div>
+                    <div class="about-img-secondary">
+                        <img src="https://images.unsplash.com/photo-1615906655593-ad0386982a0f?w=600&q=80"
+                             th:src="${aboutImage2 != null ? aboutImage2 : 'https://images.unsplash.com/photo-1615906655593-ad0386982a0f?w=600&q=80'}"
+                             alt="Команда EN-motors"
+                             th:alt="#{about.img2Alt}">
+                    </div>
+                </div>
+            </div>
+
+            <!-- Right — Story -->
+            <div class="col-lg-6">
+
+                <div class="about-eyebrow reveal" th:text="#{about.eyebrow}">Хто ми</div>
+
+                <h3 class="about-title mb-4 reveal">
+                    <span th:text="#{about.heading1}">Більше ніж автосервіс —</span><br>
+                    <span class="text-accent" th:text="#{about.heading2}">ваш надійний партнер</span>
+                </h3>
+
+                <p class="about-text mb-3 reveal" th:utext="#{about.story1}">
+                    <span class="about-highlight">EN-motors</span> — це сучасний автосервіс у Брно, заснований у 2012 році командою ентузіастів з багаторічним досвідом. Ми починали як невеликий гараж, а сьогодні обслуговуємо тисячі автомобілів щорічно.
+                </p>
+
+                <p class="about-text mb-4 reveal" th:utext="#{about.story2}">
+                    Наша місія — зробити автосервіс <span class="about-highlight">прозорим, чесним та доступним</span>. Ми інвестуємо в обладнання та навчання команди, щоб пропонувати сервіс рівня офіційних дилерів за справедливою ціною.
+                </p>
+
+                <!-- Value pills -->
+                <div class="d-flex flex-wrap gap-2 mb-4 reveal">
+          <span class="value-pill">
+            <i class="bi bi-check-circle-fill"></i>
+            <span th:text="#{about.val1}">Чесний підхід</span>
+          </span>
+                    <span class="value-pill">
+            <i class="bi bi-check-circle-fill"></i>
+            <span th:text="#{about.val2}">Якість без компромісів</span>
+          </span>
+                    <span class="value-pill">
+            <i class="bi bi-check-circle-fill"></i>
+            <span th:text="#{about.val3}">Індивідуальна увага</span>
+          </span>
+                    <span class="value-pill">
+            <i class="bi bi-check-circle-fill"></i>
+            <span th:text="#{about.val4}">Оригінальні запчастини</span>
+          </span>
+                </div>
+
+                <!-- Quote -->
+                <div class="about-quote reveal">
+                    <p th:text="#{about.quote}">
+                        «Кожне авто, що потрапляє до нас — це довіра, яку ми цінуємо. Ми ремонтуємо так, ніби це наш власний автомобіль.»
+                    </p>
+                    <div class="about-quote-author" th:text="#{about.quoteAuthor}">Євгеній Новак</div>
+                    <div class="about-quote-role" th:text="#{about.quoteRole}">Засновник EN-motors</div>
+                </div>
+
+            </div>
+        </div>
+
+        <!-- Timeline / Milestones -->
+        <div class="row g-4 g-lg-5 mb-5">
+            <div class="col-lg-4 reveal">
+                <h4 class="about-title mb-3" style="font-size: 1.4rem;">
+                    <span th:text="#{about.timeline.title}">Наш шлях</span>
+                </h4>
+                <p class="about-text" th:text="#{about.timeline.desc}">
+                    Від невеликого гаража до повноцінного сервісного центру з командою професіоналів
+                </p>
+            </div>
+            <div class="col-lg-8 reveal">
+                <div class="milestones">
+                    <div class="milestone">
+                        <div class="milestone-year" th:text="#{about.m1.year}">2012</div>
+                        <div class="milestone-text" th:text="#{about.m1.text}">Відкриття першої майстерні у Брно. Два механіки, один підйомник і велика мрія.</div>
+                    </div>
+                    <div class="milestone">
+                        <div class="milestone-year" th:text="#{about.m2.year}">2015</div>
+                        <div class="milestone-text" th:text="#{about.m2.text}">Розширення — переїзд у нове приміщення з 4 постами обслуговування та сучасним обладнанням.</div>
+                    </div>
+                    <div class="milestone">
+                        <div class="milestone-year" th:text="#{about.m3.year}">2018</div>
+                        <div class="milestone-text" th:text="#{about.m3.text}">Впровадження комп'ютерної діагностики. Сертифікація команди за міжнародними стандартами.</div>
+                    </div>
+                    <div class="milestone">
+                        <div class="milestone-year" th:text="#{about.m4.year}">2022</div>
+                        <div class="milestone-text" th:text="#{about.m4.text}">10 років на ринку. Відзнака «Найкращий автосервіс Брно» за версією клієнтів.</div>
+                    </div>
+                    <div class="milestone">
+                        <div class="milestone-year" th:text="#{about.m5.year}">Сьогодні</div>
+                        <div class="milestone-text" th:text="#{about.m5.text}">8 спеціалістів, 6 постів, 50+ видів послуг. Ваша довіра — наша рушійна сила.</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Trust Bar -->
+        <div class="trust-bar reveal">
+            <div class="row g-3 g-lg-4">
+                <div class="col-6 col-lg-3">
+                    <div class="trust-item">
+                        <div class="trust-icon"><i class="bi bi-shield-lock"></i></div>
+                        <div class="trust-label">
+                            <strong th:text="#{about.trust1.title}">Гарантія</strong>
+                            <span th:text="#{about.trust1.desc}">24 міс. на роботи</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-6 col-lg-3">
+                    <div class="trust-item">
+                        <div class="trust-icon"><i class="bi bi-award"></i></div>
+                        <div class="trust-label">
+                            <strong th:text="#{about.trust2.title}">Сертифікація</strong>
+                            <span th:text="#{about.trust2.desc}">ISO 9001 стандарт</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-6 col-lg-3">
+                    <div class="trust-item">
+                        <div class="trust-icon"><i class="bi bi-star"></i></div>
+                        <div class="trust-label">
+                            <strong th:text="#{about.trust3.title}">Рейтинг</strong>
+                            <span th:text="#{about.trust3.desc}">4.9 / 5.0 Google</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-6 col-lg-3">
+                    <div class="trust-item">
+                        <div class="trust-icon"><i class="bi bi-people"></i></div>
+                        <div class="trust-label">
+                            <strong th:text="#{about.trust4.title}">Команда</strong>
+                            <span th:text="#{about.trust4.desc}">8 сертифікованих спеціалістів</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</section>
+
+
+
+<section id="contact" class="contact-section py-5">
+    <div class="container py-lg-5">
+
+        <!-- Section Header -->
+        <div class="text-center mb-5 reveal">
+            <span class="section-badge mb-3 d-inline-block" th:text="#{contact.badge}">Зв'язатись з нами</span>
+            <h2 class="section-title mb-3">
+                <span th:text="#{contact.titleLine1}">Запишіться на</span>
+                <span class="text-accent" th:text="#{contact.titleLine2}">сервіс</span>
+            </h2>
+            <p class="section-subtitle mx-auto" th:text="#{contact.subtitle}">
+                Залиште заявку — ми зв'яжемося з вами протягом 15 хвилин для підтвердження
+            </p>
+        </div>
+
+        <!-- Success flash -->
+        <div th:if="${success}" class="alert alert-booking-success alert-dismissible fade show mb-5 reveal">
+            <i class="bi bi-check-circle-fill me-2"></i>
+            <span th:text="${success}"></span>
+            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+        </div>
+
+        <div class="row g-4 g-lg-5">
+
+            <!-- ══ LEFT: Booking Form ══ -->
+            <div class="col-lg-7 reveal">
+                <div class="form-card">
+                    <div class="d-flex align-items-center gap-3 mb-4">
+                        <div class="info-card-icon">
+                            <i class="bi bi-calendar-check"></i>
+                        </div>
+                        <div>
+                            <div class="form-title" th:text="#{contact.form.title}">Онлайн-запис</div>
+                            <div class="form-subtitle" th:text="#{contact.form.subtitle}">Заповніть форму і ми все організуємо</div>
+                        </div>
+                    </div>
+
+                    <!-- ══ Замінити блок <form> в Contact секції на цей ══ -->
+
+                    <!-- ══ Замінити блок <form> в Contact секції на цей ══ -->
+
+                    <form th:action="@{/objednat}" method="post">
+
+                        <div class="row g-3">
+
+                            <!-- Name -->
+                            <div class="col-md-6">
+                                <label class="form-dark-label" th:text="#{contact.field.name}">Ім'я</label>
+                                <input type="text" name="name"
+                                       class="form-dark w-100"
+                                       th:placeholder="#{contact.field.name.ph}">
+                            </div>
+
+                            <!-- Phone -->
+                            <div class="col-md-6">
+                                <label class="form-dark-label" th:text="#{contact.field.phone}">Телефон *</label>
+                                <input type="tel" name="phone"
+                                       class="form-dark w-100"
+                                       th:placeholder="#{contact.field.phone.ph}"
+                                       required>
+                            </div>
+
+                            <!-- Request Type -->
+                            <div class="col-md-6">
+                                <label class="form-dark-label" th:text="#{contact.field.type}">Тип заявки *</label>
+                                <select name="requestType"
+                                        class="form-dark form-dark-select w-100"
+                                        required>
+                                    <option value="" disabled selected
+                                            th:text="#{contact.field.type.ph}">Оберіть тип</option>
+                                    <option th:each="type : ${requestTypes}"
+                                            th:value="${type}"
+                                            th:text="#{${'requestType.' + type.name()}}">
+                                    </option>
+                                </select>
+                            </div>
+
+                            <!-- Service (optional) -->
+                            <div class="col-md-6">
+                                <label class="form-dark-label" th:text="#{contact.field.service}">Послуга</label>
+                                <select name="serviceItemId"
+                                        class="form-dark form-dark-select w-100">
+                                    <option value="" th:text="#{contact.field.service.ph}">Не обрано</option>
+                                    <option th:each="svc : ${services}"
+                                            th:value="${svc.id}"
+                                            th:text="${svc.name}">
+                                    </option>
+                                </select>
+                            </div>
+
+                            <!-- Appointment Date -->
+                            <div class="col-md-6">
+                                <label class="form-dark-label" th:text="#{contact.field.date}">Бажана дата та час</label>
+                                <input type="datetime-local" name="appointmentDate"
+                                       class="form-dark w-100">
+                            </div>
+
+                            <!-- Message -->
+                            <div class="col-12">
+                                <label class="form-dark-label" th:text="#{contact.field.message}">Повідомлення</label>
+                                <textarea name="message"
+                                          class="form-dark w-100"
+                                          rows="3"
+                                          th:placeholder="#{contact.field.message.ph}"></textarea>
+                            </div>
+
+                            <!-- Submit -->
+                            <div class="col-12 mt-2">
+                                <button type="submit" class="btn-submit">
+                                    <i class="bi bi-send me-2"></i>
+                                    <span th:text="#{contact.form.submit}">Надіслати заявку</span>
+                                </button>
+                                <p class="text-center mt-3" style="font-size:0.75rem; color:rgba(255,255,255,0.25);"
+                                   th:text="#{contact.form.privacy}">
+                                    Натискаючи кнопку, ви погоджуєтесь з обробкою персональних даних
+                                </p>
+                            </div>
+
+                        </div>
+                    </form>
+                </div>
+            </div>
+
+            <!-- ══ RIGHT: Contact Info ══ -->
+            <div class="col-lg-5">
+                <div class="d-flex flex-column gap-3">
+
+                    <!-- Phone -->
+                    <div class="info-card reveal">
+                        <div class="d-flex align-items-center gap-3">
+                            <div class="info-card-icon">
+                                <i class="bi bi-telephone-fill"></i>
+                            </div>
+                            <div>
+                                <div class="info-card-label" th:text="#{contact.info.phone}">Телефон</div>
+                                <div class="info-card-value">
+                                    <a href="tel:+420776485550">+420 776 485 550</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Email -->
+                    <div class="info-card reveal">
+                        <div class="d-flex align-items-center gap-3">
+                            <div class="info-card-icon">
+                                <i class="bi bi-envelope-fill"></i>
+                            </div>
+                            <div>
+                                <div class="info-card-label" th:text="#{contact.info.email}">Email</div>
+                                <div class="info-card-value">
+                                    <a href="mailto:info@en-motors.cz">info@en-motors.cz</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Address -->
+                    <div class="info-card reveal">
+                        <div class="d-flex align-items-center gap-3">
+                            <div class="info-card-icon">
+                                <i class="bi bi-geo-alt-fill"></i>
+                            </div>
+                            <div>
+                                <div class="info-card-label" th:text="#{contact.info.address}">Адреса</div>
+                                <div class="info-card-value" th:text="#{contact.info.addressVal}">
+                                    Vídeňská 120, 619 00 Brno
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Working Hours -->
+                    <div class="info-card reveal">
+                        <div class="d-flex align-items-center gap-3 mb-3">
+                            <div class="info-card-icon">
+                                <i class="bi bi-clock-fill"></i>
+                            </div>
+                            <div>
+                                <div class="info-card-label" th:text="#{contact.info.hours}">Графік роботи</div>
+                                <div class="info-card-value" th:text="#{contact.info.hoursVal}">Пн — Сб</div>
+                            </div>
+                        </div>
+                        <div>
+                            <div class="hours-row">
+                                <span class="hours-day" th:text="#{contact.hours.weekdays}">Пн — Пт</span>
+                                <span class="hours-time">8:00 — 18:00</span>
+                            </div>
+                            <div class="hours-row">
+                                <span class="hours-day" th:text="#{contact.hours.saturday}">Сб</span>
+                                <span class="hours-time">9:00 — 14:00</span>
+                            </div>
+                            <div class="hours-row">
+                                <span class="hours-day" th:text="#{contact.hours.sunday}">Нд</span>
+                                <span class="hours-closed" th:text="#{contact.hours.closed}">Зачинено</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Map -->
+                    <div class="map-wrap reveal">
+                        <iframe
+                                src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2607.7!2d16.608!3d49.177!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0x0!2zNDnCsDEwJzM3LjIiTiAxNsKwMzYnMjguOCJF!5e0!3m2!1suk!2scz!4v1"
+                                th:src="${mapEmbedUrl != null ? mapEmbedUrl : 'https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2607.7!2d16.608!3d49.177!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0x0!2zNDnCsDEwJzM3LjIiTiAxNsKwMzYnMjguOCJF!5e0!3m2!1suk!2scz!4v1'}"
+                                allowfullscreen
+                                loading="lazy"
+                                referrerpolicy="no-referrer-when-downgrade">
+                        </iframe>
+                    </div>
+
+                </div>
+            </div>
+
+        </div>
+    </div>
+</section>
+
+
+<!-- ════════════ FOOTER ════════════ -->
+<footer class="footer pt-5">
+    <div class="container">
+
+        <!-- CTA Banner -->
+        <div class="footer-cta mb-5 reveal">
+            <div class="row align-items-center g-4">
+                <div class="col-lg-7">
+                    <h3 class="footer-cta-title mb-2">
+                        <span th:text="#{footer.cta.line1}">Потрібен ремонт?</span>
+                        <span class="text-accent" th:text="#{footer.cta.line2}">Запишіться зараз</span>
+                    </h3>
+                    <p class="footer-cta-sub mb-0" th:text="#{footer.cta.sub}">
+                        Залиште заявку онлайн або зателефонуйте — ми працюємо Пн–Сб
+                    </p>
+                </div>
+                <div class="col-lg-5 d-flex gap-3 justify-content-lg-end flex-wrap">
+                    <a th:href="@{/{lang}/objednat(lang=${currentLang.code})}" class="btn-footer-cta d-inline-flex align-items-center gap-2">
+                        <i class="bi bi-calendar-check"></i>
+                        <span th:text="#{footer.cta.book}">Записатись</span>
+                    </a>
+                    <a href="tel:+420776485550" class="btn-footer-phone d-inline-flex align-items-center gap-2">
+                        <i class="bi bi-telephone-fill"></i>
+                        +420 776 485 550
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <!-- Main Footer Grid -->
+        <div class="row g-4 g-lg-5 pb-5">
+
+            <!-- Col 1: Brand -->
+            <div class="col-lg-4 col-md-6">
+                <a th:href="@{/{lang}(lang=${currentLang.code})}" class="footer-logo mb-3 d-inline-flex">
+                    <div class="footer-logo-box">
+                        <i class="bi bi-wrench-adjustable-circle"></i>
+                    </div>
+                    <span>EN-motors</span>
+                </a>
+                <p class="footer-desc mt-3 mb-4" th:text="#{footer.desc}">
+                    Професійний автосервіс у Брно. Діагностика, ремонт та обслуговування сучасних автомобілів з гарантією якості.
+                </p>
+                <div class="d-flex gap-2">
+                    <a href="#" class="social-link" aria-label="Facebook"><i class="bi bi-facebook"></i></a>
+                    <a href="#" class="social-link" aria-label="Instagram"><i class="bi bi-instagram"></i></a>
+                    <a href="#" class="social-link" aria-label="WhatsApp"><i class="bi bi-whatsapp"></i></a>
+                    <a href="#" class="social-link" aria-label="Google"><i class="bi bi-google"></i></a>
+                </div>
+            </div>
+
+            <!-- Col 2: Navigation -->
+            <div class="col-lg-2 col-md-6 col-6">
+                <div class="footer-heading" th:text="#{footer.nav.title}">Навігація</div>
+                <nav>
+                    <a th:href="@{/{lang}(lang=${currentLang.code})}"
+                       class="footer-link" th:text="#{nav.home}">Головна</a>
+                    <a th:href="@{/{lang}#services(lang=${currentLang.code})}"
+                       class="footer-link" th:text="#{nav.services}">Послуги</a>
+                    <a th:href="@{/{lang}#why(lang=${currentLang.code})}"
+                       class="footer-link" th:text="#{nav.why}">Переваги</a>
+                    <a th:href="@{/{lang}#about(lang=${currentLang.code})}"
+                       class="footer-link" th:text="#{footer.nav.about}">Про нас</a>
+                    <a th:href="@{/{lang}#contact(lang=${currentLang.code})}"
+                       class="footer-link" th:text="#{nav.contact}">Контакти</a>
+                    <a th:href="@{/{lang}/objednat(lang=${currentLang.code})}"
+                       class="footer-link" th:text="#{nav.book}">Записатись</a>
+                </nav>
+            </div>
+
+            <!-- Col 3: Services quick links -->
+            <div class="col-lg-2 col-md-6 col-6">
+                <div class="footer-heading" th:text="#{footer.services.title}">Послуги</div>
+                <nav>
+                    <a href="#services" class="footer-link" th:text="#{footer.svc1}">Діагностика</a>
+                    <a href="#services" class="footer-link" th:text="#{footer.svc2}">Заміна масла</a>
+                    <a href="#services" class="footer-link" th:text="#{footer.svc3}">Гальма</a>
+                    <a href="#services" class="footer-link" th:text="#{footer.svc4}">Трансмісія</a>
+                    <a href="#services" class="footer-link" th:text="#{footer.svc5}">Шиномонтаж</a>
+                    <a href="#services" class="footer-link" th:text="#{footer.svc6}">Електрика</a>
+                </nav>
+            </div>
+
+            <!-- Col 4: Contact + Hours -->
+            <div class="col-lg-4 col-md-6">
+                <div class="footer-heading" th:text="#{footer.contact.title}">Контакти</div>
+
+                <div class="footer-contact-item">
+                    <i class="bi bi-geo-alt-fill"></i>
+                    <span th:text="#{contact.info.addressVal}">Vídeňská 120, 619 00 Brno</span>
+                </div>
+                <div class="footer-contact-item">
+                    <i class="bi bi-telephone-fill"></i>
+                    <a href="tel:+420776485550">+420 776 485 550</a>
+                </div>
+                <div class="footer-contact-item">
+                    <i class="bi bi-envelope-fill"></i>
+                    <a href="mailto:info@en-motors.cz">info@en-motors.cz</a>
+                </div>
+
+                <div class="mt-3">
+                    <div class="footer-heading mb-2" th:text="#{footer.hours.title}">Графік</div>
+                    <div class="footer-hours">
+                        <span th:text="#{contact.hours.weekdays}">Пн — Пт</span>: <strong>8:00 — 18:00</strong><br>
+                        <span th:text="#{contact.hours.saturday}">Сб</span>: <strong>9:00 — 14:00</strong><br>
+                        <span th:text="#{contact.hours.sunday}">Нд</span>:
+                        <strong style="color:rgba(248,113,113,0.7);" th:text="#{contact.hours.closed}">Зачинено</strong>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+        <!-- Bottom Bar -->
+        <div class="footer-bottom py-4">
+            <div class="d-flex align-items-center justify-content-between flex-wrap gap-3">
+                <div class="footer-copy">
+                    © <span th:text="${#dates.format(#dates.createNow(), 'yyyy')}">2026</span>
+                    EN-motors.
+                    <span th:text="#{footer.rights}">Всі права захищені.</span>
+                </div>
+                <div class="footer-bottom-links">
+                    <a href="#" th:text="#{footer.privacy}">Політика конфіденційності</a>
+                    <a href="#" th:text="#{footer.terms}">Умови використання</a>
+                </div>
+                <a href="#" class="back-to-top" aria-label="Back to top">
+                    <i class="bi bi-arrow-up"></i>
+                </a>
+            </div>
+        </div>
+
+    </div>
+</footer>
+
+
+<!-- Smooth scroll to top -->
+<script>
+    document.querySelector('.back-to-top')?.addEventListener('click', function(e) {
+        e.preventDefault();
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+    });
+</script>
+
+
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 </body>
