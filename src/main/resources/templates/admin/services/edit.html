@@ -9,22 +9,13 @@
     <style>
         body { background: #f0f2f5; }
         .card { border: none; border-radius: .75rem; box-shadow: 0 1px 3px rgba(0,0,0,.06); }
-        .photo-preview {
-            width: 100%;
-            max-height: 220px;
-            object-fit: cover;
-            border-radius: .5rem;
-        }
+        .nav-tabs .nav-link { font-size: .9rem; }
+        .nav-tabs .nav-link.active { font-weight: 600; }
+        .lang-flag { font-size: 1.1rem; margin-right: .35rem; }
+        .photo-preview { width: 100%; max-height: 220px; object-fit: cover; border-radius: .5rem; }
         .photo-placeholder {
-            width: 100%;
-            height: 160px;
-            border: 2px dashed #dee2e6;
-            border-radius: .5rem;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            flex-direction: column;
-            color: #adb5bd;
+            width: 100%; height: 160px; border: 2px dashed #dee2e6; border-radius: .5rem;
+            display: flex; align-items: center; justify-content: center; flex-direction: column; color: #adb5bd;
         }
     </style>
 </head>
@@ -53,7 +44,6 @@
                 <small class="text-muted" th:text="'ID: ' + ${serviceItem.id}"></small>
             </div>
         </div>
-        <!-- Видалити послугу -->
         <form th:action="@{/admin/services/delete/{id}(id=${serviceItem.id})}"
               method="post"
               onsubmit="return confirm('Ви впевнені, що хочете видалити цю послугу?')">
@@ -65,38 +55,31 @@
 
     <div class="row g-4">
 
-        <!-- Ліва колонка — форма редагування -->
+        <!-- Ліва колонка -->
         <div class="col-lg-8">
             <form th:action="@{/admin/services/edit/{id}(id=${serviceItem.id})}"
                   th:object="${serviceItem}"
                   method="post">
 
+                <!-- Статус — всередині форми -->
+                <div class="card">
+                    <div class="card-body p-4">
+                        <h6 class="fw-bold mb-3">Статус</h6>
+
+                        <div class="form-check form-switch mb-3">
+                            <input class="form-check-input" type="checkbox" id="active"
+                                   th:field="*{active}">
+                            <label class="form-check-label" for="active">
+                                Активна (видима на сайті)
+                            </label>
+                        </div>
+                    </div>
+                </div>
                 <!-- Основна інформація -->
                 <div class="card">
                     <div class="card-body p-4">
                         <h6 class="fw-bold mb-3">Основна інформація</h6>
-
-                        <!-- Назва -->
-                        <div class="mb-3">
-                            <label for="name" class="form-label">Назва послуги <span class="text-danger">*</span></label>
-                            <input type="text" class="form-control" id="name"
-                                   th:field="*{name}"
-                                   th:classappend="${#fields.hasErrors('name') ? 'is-invalid' : ''}"
-                                   placeholder="напр. Výměna motorového oleje">
-                            <div class="invalid-feedback" th:if="${#fields.hasErrors('name')}" th:errors="*{name}"></div>
-                        </div>
-
-                        <!-- Опис -->
-                        <div class="mb-3">
-                            <label for="description" class="form-label">Опис</label>
-                            <textarea class="form-control" id="description"
-                                      th:field="*{description}"
-                                      rows="3"
-                                      placeholder="Короткий опис послуги..."></textarea>
-                        </div>
-
                         <div class="row">
-                            <!-- Ціна -->
                             <div class="col-md-4 mb-3">
                                 <label for="price" class="form-label">Ціна (Kč) <span class="text-danger">*</span></label>
                                 <div class="input-group">
@@ -108,8 +91,6 @@
                                     <div class="invalid-feedback" th:if="${#fields.hasErrors('price')}" th:errors="*{price}"></div>
                                 </div>
                             </div>
-
-                            <!-- Категорія -->
                             <div class="col-md-4 mb-3">
                                 <label for="category" class="form-label">Категорія <span class="text-danger">*</span></label>
                                 <select class="form-select" id="category"
@@ -122,83 +103,159 @@
                                 </select>
                                 <div class="invalid-feedback" th:if="${#fields.hasErrors('category')}" th:errors="*{category}"></div>
                             </div>
-
-                            <!-- Ціна "від" -->
                             <div class="col-md-4 mb-3 d-flex align-items-end">
                                 <div class="form-check">
                                     <input class="form-check-input" type="checkbox" id="priceFrom"
                                            th:field="*{priceFrom}">
-                                    <label class="form-check-label" for="priceFrom">
-                                        Ціна від (od 800 Kč)
+                                    <label class="form-check-label" for="priceFrom">Ціна від</label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+
+                <!-- Переклади (таби) -->
+                <div class="card mt-4">
+                    <div class="card-body p-4">
+                        <h6 class="fw-bold mb-3">Переклади</h6>
+
+                        <ul class="nav nav-tabs" role="tablist">
+                            <li class="nav-item" th:each="lang, iter : ${languages}">
+                                <button class="nav-link"
+                                        th:classappend="${iter.index == 0 ? 'active' : ''}"
+                                        th:id="'tab-' + ${lang.code}"
+                                        type="button" role="tab"
+                                        th:attr="data-bs-toggle='tab', data-bs-target='#panel-' + ${lang.code}">
+                                    <span class="lang-flag" th:text="${lang.flag}"></span>
+                                    <span th:text="${lang.displayName}"></span>
+                                </button>
+                            </li>
+                        </ul>
+
+                        <div class="tab-content pt-3">
+                            <div th:each="lang, iter : ${languages}"
+                                 class="tab-pane fade"
+                                 th:classappend="${iter.index == 0 ? 'show active' : ''}"
+                                 th:id="'panel-' + ${lang.code}"
+                                 role="tabpanel">
+
+                                <input type="hidden"
+                                       th:name="'translations[' + ${iter.index} + '].language'"
+                                       th:value="${lang}">
+
+                                <!-- Назва -->
+                                <div class="mb-3">
+                                    <label class="form-label">
+                                        Назва <span class="text-danger">*</span>
+                                        <span class="badge bg-light text-muted ms-1" th:text="${lang.code}"></span>
                                     </label>
+                                    <input type="text" class="form-control"
+                                           th:name="'translations[' + ${iter.index} + '].name'"
+                                           th:value="${serviceItem.translations != null && serviceItem.translations.size() > __${iter.index}__} ? ${serviceItem.translations[__${iter.index}__].name} : ''"
+                                           th:placeholder="${lang.code == 'cs' ? 'Výměna motorového oleje' :
+                                                            (lang.code == 'en' ? 'Engine oil change' : 'Замена моторного масла')}">
+                                </div>
+
+                                <!-- Опис -->
+                                <div class="mb-3">
+                                    <label class="form-label">Опис
+                                        <span class="badge bg-light text-muted ms-1" th:text="${lang.code}"></span>
+                                    </label>
+                                    <textarea class="form-control" rows="2"
+                                              th:name="'translations[' + ${iter.index} + '].description'"
+                                              th:text="${serviceItem.translations != null && serviceItem.translations.size() > __${iter.index}__} ? ${serviceItem.translations[__${iter.index}__].description} : ''"
+                                              placeholder="Опис послуги..."></textarea>
+                                </div>
+
+                                <!-- SEO -->
+                                <div class="bg-light rounded-3 p-3">
+                                    <div class="small fw-semibold text-muted mb-2">
+                                        <i class="bi bi-search me-1"></i> SEO
+                                    </div>
+
+                                    <!-- Slug (заблокований при редагуванні) -->
+                                    <!-- Slug — редагується тільки якщо порожній -->
+                                    <div class="mb-2">
+                                        <label class="form-label small">URL slug</label>
+                                        <div class="input-group input-group-sm">
+        <span class="input-group-text text-muted"
+              th:text="'/' + ${lang.code} + '/sluzby/'"></span>
+
+                                            <!-- Заповнений — заблокований -->
+                                            <input th:if="${serviceItem.translations != null
+                       && serviceItem.translations.size() > __${iter.index}__
+                       && serviceItem.translations[__${iter.index}__].slug != null
+                       && !serviceItem.translations[__${iter.index}__].slug.isEmpty()}"
+                                                   type="text" class="form-control bg-light"
+                                                   th:value="${serviceItem.translations[__${iter.index}__].slug}"
+                                                   readonly disabled>
+
+                                            <!-- Порожній — можна заповнити -->
+                                            <input th:unless="${serviceItem.translations != null
+                           && serviceItem.translations.size() > __${iter.index}__
+                           && serviceItem.translations[__${iter.index}__].slug != null
+                           && !serviceItem.translations[__${iter.index}__].slug.isEmpty()}"
+                                                   type="text" class="form-control"
+                                                   th:name="|translations[${iter.index}].slug|"
+                                                   placeholder="vymena-oleje">
+
+                                            <span class="input-group-text">
+            <i class="bi bi-lock" th:if="${serviceItem.translations != null
+                                          && serviceItem.translations.size() > __${iter.index}__
+                                          && serviceItem.translations[__${iter.index}__].slug != null
+                                          && !serviceItem.translations[__${iter.index}__].slug.isEmpty()}"></i>
+            <i class="bi bi-unlock" th:unless="${serviceItem.translations != null
+                                                && serviceItem.translations.size() > __${iter.index}__
+                                                && serviceItem.translations[__${iter.index}__].slug != null
+                                                && !serviceItem.translations[__${iter.index}__].slug.isEmpty()}"></i>
+        </span>
+                                        </div>
+                                        <div class="form-text small"
+                                             th:text="${serviceItem.translations != null
+                   && serviceItem.translations.size() > __${iter.index}__
+                   && serviceItem.translations[__${iter.index}__].slug != null
+                   && !serviceItem.translations[__${iter.index}__].slug.isEmpty()}
+                   ? 'Slug заблокований — URL проіндексований'
+                   : 'Задайте slug — після збереження змінити не можна'">
+                                        </div>
+                                    </div>
+
+                                    <!-- Meta title -->
+                                    <div class="mb-2">
+                                        <label class="form-label small">Meta title</label>
+                                        <input type="text" class="form-control form-control-sm"
+                                               th:name="'translations[' + ${iter.index} + '].metaTitle'"
+                                               th:value="${serviceItem.translations != null && serviceItem.translations.size() > __${iter.index}__} ? ${serviceItem.translations[__${iter.index}__].metaTitle} : ''"
+                                               maxlength="160"
+                                               placeholder="Meta title...">
+                                    </div>
+
+                                    <!-- Meta description -->
+                                    <div class="mb-2">
+                                        <label class="form-label small">Meta description</label>
+                                        <textarea class="form-control form-control-sm" rows="2"
+                                                  th:name="'translations[' + ${iter.index} + '].metaDescription'"
+                                                  th:text="${serviceItem.translations != null && serviceItem.translations.size() > __${iter.index}__} ? ${serviceItem.translations[__${iter.index}__].metaDescription} : ''"
+                                                  maxlength="300"
+                                                  placeholder="Meta description..."></textarea>
+                                    </div>
+
+                                    <!-- Image alt -->
+                                    <div>
+                                        <label class="form-label small">Alt текст зображення</label>
+                                        <input type="text" class="form-control form-control-sm"
+                                               th:name="'translations[' + ${iter.index} + '].imageAlt'"
+                                               th:value="${serviceItem.translations != null && serviceItem.translations.size() > __${iter.index}__} ? ${serviceItem.translations[__${iter.index}__].imageAlt} : ''"
+                                               placeholder="Alt текст...">
+                                    </div>
                                 </div>
                             </div>
                         </div>
                     </div>
                 </div>
 
-                <!-- SEO блок -->
-                <div class="card mt-4">
-                    <div class="card-body p-4">
-                        <div class="d-flex align-items-center mb-3">
-                            <h6 class="fw-bold mb-0">SEO налаштування</h6>
-                            <span class="badge bg-light text-muted ms-2">Необов'язково</span>
-                        </div>
-
-                        <!-- Slug (тільки перегляд) -->
-                        <div class="mb-3">
-                            <label class="form-label">URL slug</label>
-                            <div class="input-group">
-                                <span class="input-group-text text-muted">/sluzby/</span>
-                                <input type="text" class="form-control bg-light"
-                                       th:value="${serviceItem.slug}"
-                                       readonly disabled>
-                                <span class="input-group-text" title="Slug не можна змінити після створення">
-                                    <i class="bi bi-lock"></i>
-                                </span>
-                            </div>
-                            <div class="form-text">Slug не можна змінити — URL вже проіндексований</div>
-                        </div>
-
-                        <!-- Meta title -->
-                        <div class="mb-3">
-                            <label for="metaTitle" class="form-label">Meta title</label>
-                            <input type="text" class="form-control" id="metaTitle"
-                                   th:field="*{metaTitle}"
-                                   th:classappend="${#fields.hasErrors('metaTitle') ? 'is-invalid' : ''}"
-                                   maxlength="160"
-                                   placeholder="Výměna oleje Brno | EN-motors">
-                            <div class="d-flex justify-content-between">
-                                <div class="invalid-feedback" th:if="${#fields.hasErrors('metaTitle')}" th:errors="*{metaTitle}"></div>
-                                <small class="form-text text-end" id="metaTitleCount">0 / 160</small>
-                            </div>
-                        </div>
-
-                        <!-- Meta description -->
-                        <div class="mb-3">
-                            <label for="metaDescription" class="form-label">Meta description</label>
-                            <textarea class="form-control" id="metaDescription"
-                                      th:field="*{metaDescription}"
-                                      th:classappend="${#fields.hasErrors('metaDescription') ? 'is-invalid' : ''}"
-                                      rows="2" maxlength="300"
-                                      placeholder="Опис для пошукової видачі..."></textarea>
-                            <div class="d-flex justify-content-between">
-                                <div class="invalid-feedback" th:if="${#fields.hasErrors('metaDescription')}" th:errors="*{metaDescription}"></div>
-                                <small class="form-text text-end" id="metaDescCount">0 / 300</small>
-                            </div>
-                        </div>
-
-                        <!-- Image alt -->
-                        <div class="mb-0">
-                            <label for="imageAlt" class="form-label">Alt текст для зображення</label>
-                            <input type="text" class="form-control" id="imageAlt"
-                                   th:field="*{imageAlt}"
-                                   placeholder="Výměna motorového oleje v autoservisu EN-motors Brno">
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Кнопки збереження -->
+                <!-- Кнопки -->
                 <div class="d-flex gap-2 mt-4">
                     <button type="submit" class="btn btn-primary">
                         <i class="bi bi-check-lg me-1"></i> Зберегти зміни
@@ -209,7 +266,7 @@
             </form>
         </div>
 
-        <!-- Права колонка — фото та статус -->
+        <!-- Права колонка -->
         <div class="col-lg-4">
 
             <!-- Статус -->
@@ -237,10 +294,8 @@
                 <div class="card-body p-4">
                     <h6 class="fw-bold mb-3">Фото</h6>
 
-                    <!-- Поточне фото -->
                     <div th:if="${serviceItem.imageUrl != null}" class="mb-3">
                         <img th:src="${serviceItem.imageUrl}"
-                             th:alt="${serviceItem.imageAlt}"
                              class="photo-preview mb-2">
                         <form th:action="@{/admin/services/{id}/photo/delete(id=${serviceItem.id})}"
                               method="post"
@@ -251,20 +306,16 @@
                         </form>
                     </div>
 
-                    <!-- Placeholder якщо фото немає -->
                     <div th:unless="${serviceItem.imageUrl != null}" class="photo-placeholder mb-3">
                         <i class="bi bi-image fs-1"></i>
                         <small>Фото не завантажено</small>
                     </div>
 
-                    <!-- Завантаження фото -->
                     <form th:action="@{/admin/services/{id}/photo(id=${serviceItem.id})}"
-                          method="post"
-                          enctype="multipart/form-data">
+                          method="post" enctype="multipart/form-data">
                         <div class="mb-2">
                             <input type="file" class="form-control form-control-sm"
-                                   name="file" accept="image/*"
-                                   id="photoInput">
+                                   name="file" accept="image/*" id="photoInput">
                         </div>
                         <button type="submit" class="btn btn-primary btn-sm w-100" id="uploadBtn" disabled>
                             <i class="bi bi-upload me-1"></i> Завантажити фото
@@ -273,21 +324,17 @@
                 </div>
             </div>
 
-            <!-- SEO прев'ю -->
+            <!-- Підказка -->
             <div class="card mt-4">
                 <div class="card-body p-4">
-                    <h6 class="fw-bold mb-3">Прев'ю у пошуку</h6>
-                    <div class="border rounded p-3" style="font-family: Arial, sans-serif;">
-                        <div id="previewTitle" class="text-primary" style="font-size: 18px;"
-                             th:text="${serviceItem.metaTitle != null ? serviceItem.metaTitle : serviceItem.name} + ' | EN-motors'">
-                        </div>
-                        <div id="previewUrl" class="text-success small"
-                             th:text="'en-motors.cz/sluzby/' + ${serviceItem.slug ?: '...'}">
-                        </div>
-                        <div id="previewDesc" class="text-muted small mt-1"
-                             th:text="${serviceItem.metaDescription ?: 'Опис послуги...'}">
-                        </div>
-                    </div>
+                    <h6 class="fw-bold mb-2">
+                        <i class="bi bi-info-circle me-1"></i> Підказка
+                    </h6>
+                    <ul class="small text-muted mb-0" style="padding-left: 1rem;">
+                        <li class="mb-1">Ціна та фото — спільні для всіх мов</li>
+                        <li class="mb-1">Slug заблокований — URL вже проіндексований</li>
+                        <li>Якщо переклад порожній — покажеться чеська версія</li>
+                    </ul>
                 </div>
             </div>
 
@@ -297,35 +344,6 @@
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 <script>
-    // Лічильники символів
-    const metaTitleEl = document.getElementById('metaTitle');
-    const metaDescEl = document.getElementById('metaDescription');
-
-    function updateCount(input, counterId, max) {
-        document.getElementById(counterId).textContent = input.value.length + ' / ' + max;
-    }
-
-    metaTitleEl.addEventListener('input', () => updateCount(metaTitleEl, 'metaTitleCount', 160));
-    metaDescEl.addEventListener('input', () => updateCount(metaDescEl, 'metaDescCount', 300));
-
-    // Ініціалізація лічильників
-    updateCount(metaTitleEl, 'metaTitleCount', 160);
-    updateCount(metaDescEl, 'metaDescCount', 300);
-
-    // SEO прев'ю
-    const nameInput = document.getElementById('name');
-
-    function updatePreview() {
-        const title = metaTitleEl.value || nameInput.value || 'Назва послуги';
-        document.getElementById('previewTitle').textContent = title + ' | EN-motors';
-        document.getElementById('previewDesc').textContent = metaDescEl.value || 'Опис послуги...';
-    }
-
-    nameInput.addEventListener('input', updatePreview);
-    metaTitleEl.addEventListener('input', updatePreview);
-    metaDescEl.addEventListener('input', updatePreview);
-
-    // Активація кнопки завантаження при виборі файлу
     document.getElementById('photoInput').addEventListener('change', function() {
         document.getElementById('uploadBtn').disabled = !this.files.length;
     });

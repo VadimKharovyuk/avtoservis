@@ -21,8 +21,5 @@ public interface ServiceItemRepository extends JpaRepository<ServiceItem, Long> 
     List<ServiceItem> findTopByActiveTrueOrderByCreatedAtDesc(Pageable pageable);
 
 
-
-    Optional<ServiceItem> findBySlugAndActiveTrue(String slug);
-
     List<ServiceItem> findByActiveTrueOrderByCreatedAtDesc();
 }

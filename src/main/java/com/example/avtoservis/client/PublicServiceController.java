@@ -2,6 +2,7 @@ package com.example.avtoservis.client;
 
 import com.example.avtoservis.dto.ContactRequest.ContactRequestCreateDto;
 import com.example.avtoservis.dto.ServiceItemResponseDto;
+import com.example.avtoservis.enums.Language;
 import com.example.avtoservis.enums.RequestType;
 
 import com.example.avtoservis.admin.service.AdminContactRequestService;
@@ -21,11 +22,14 @@ public class PublicServiceController {
     private final PublicServiceItemService publicServiceItemService;
     private final AdminContactRequestService contactRequestService;
 
-
-    @GetMapping("/sluzby/{slug}")
-    public String serviceDetail(@PathVariable String slug, Model model) {
-        ServiceItemResponseDto service = publicServiceItemService.getBySlug(slug);
+    @GetMapping("/{lang}/sluzby/{slug}")
+    public String serviceDetail(@PathVariable String lang,
+                                @PathVariable String slug,
+                                Model model) {
+        Language language = Language.fromCode(lang);
+        ServiceItemResponseDto service = publicServiceItemService.getBySlug(slug, language);
         model.addAttribute("service", service);
+        model.addAttribute("currentLang", language);
         return "public/service-detail";
     }
 

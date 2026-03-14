@@ -1,6 +1,4 @@
-package com.example.avtoservis.dto;
-
-import com.example.avtoservis.dto.ServiceItemTranslation.ServiceItemTranslationDto;
+package com.example.avtoservis.dto.ServiceItemTranslation;
 import com.example.avtoservis.enums.ServiceCategory;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.*;
@@ -17,19 +15,20 @@ import java.util.List;
 @Builder
 public class ServiceItemCreateDto {
 
-    @NotNull(message = "Cena je povinná")
-    @DecimalMin(value = "0.0", message = "Cena musí být kladná")
+    @NotNull(message = "Ціна обов'язкова")
+    @DecimalMin(value = "0.0", message = "Ціна повинна бути додатньою")
     private BigDecimal price;
 
     @Builder.Default
     private boolean priceFrom = false;
 
-    @NotNull(message = "Kategorie je povinná")
+    @NotNull(message = "Категорія обов'язкова")
     private ServiceCategory category;
 
     @Builder.Default
     private boolean active = true;
 
+    // Переклади — мінімум один (CS)
     @Valid
     @Builder.Default
     private List<ServiceItemTranslationDto> translations = new ArrayList<>();

@@ -4,6 +4,7 @@ import com.example.avtoservis.admin.service.AdminServiceItemService;
 import com.example.avtoservis.dto.ServiceItemCreateDto;
 import com.example.avtoservis.dto.ServiceItemResponseDto;
 import com.example.avtoservis.dto.ServiceItemUpdateDto;
+import com.example.avtoservis.enums.Language;
 import com.example.avtoservis.maper.ServiceItemMapper;
 import com.example.avtoservis.model.ServiceItem;
 import com.example.avtoservis.repositoty.ServiceItemRepository;
@@ -35,11 +36,10 @@ public class AdminServiceItemServiceImpl implements AdminServiceItemService {
     @Value("${app.home.services-limit:3}")
     private int servicesLimit;
 
-
     @Override
     @Transactional
     public ServiceItemResponseDto create(ServiceItemCreateDto createDto) {
-        log.info("Creating service item: {}", createDto.getName());
+        log.info("Creating service item, category: {}", createDto.getCategory());
 
         ServiceItem entity = serviceItemMapper.toEntity(createDto);
         ServiceItem saved = serviceItemRepository.save(entity);
@@ -68,7 +68,6 @@ public class AdminServiceItemServiceImpl implements AdminServiceItemService {
 
         ServiceItem entity = findEntityById(serviceItemId);
 
-        // Удаляем старое фото если есть
         if (entity.getImageId() != null) {
             log.info("Deleting old photo: {}", entity.getImageId());
             storageService.deleteImage(entity.getImageId());
@@ -100,7 +99,6 @@ public class AdminServiceItemServiceImpl implements AdminServiceItemService {
             storageService.deleteImage(entity.getImageId());
             entity.setImageUrl(null);
             entity.setImageId(null);
-            entity.setImageAlt(null);
             serviceItemRepository.save(entity);
             log.info("Photo deleted for service item id: {}", serviceItemId);
         }
@@ -129,7 +127,6 @@ public class AdminServiceItemServiceImpl implements AdminServiceItemService {
 
         ServiceItem entity = findEntityById(id);
 
-        // Удаляем фото из Cloudinary перед удалением сущности
         if (entity.getImageId() != null) {
             storageService.deleteImage(entity.getImageId());
         }
@@ -138,7 +135,6 @@ public class AdminServiceItemServiceImpl implements AdminServiceItemService {
         log.info("Service item deleted: {}", id);
     }
 
-
     @Override
     @Transactional(readOnly = true)
     public List<ServiceItemResponseDto> getLatestServices() {
@@ -146,6 +142,17 @@ public class AdminServiceItemServiceImpl implements AdminServiceItemService {
                 .findTopByActiveTrueOrderByCreatedAtDesc(PageRequest.of(0, servicesLimit))
                 .stream()
                 .map(serviceItemMapper::toResponse)
+                .toList();
+    }
+
+    // Для публічної частини — з мовою
+    @Override
+    @Transactional(readOnly = true)
+    public List<ServiceItemResponseDto> getLatestServices(Language language) {
+        return serviceItemRepository
+                .findTopByActiveTrueOrderByCreatedAtDesc(PageRequest.of(0, servicesLimit))
+                .stream()
+                .map(entity -> serviceItemMapper.toResponse(entity, language))
                 .toList();
     }
 

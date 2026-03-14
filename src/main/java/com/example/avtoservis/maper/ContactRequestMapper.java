@@ -31,7 +31,7 @@ public class ContactRequestMapper {
                 .statusDisplayName(entity.getStatus().getDisplayName())
                 .message(entity.getMessage())
                 .serviceItemId(entity.getServiceItem() != null ? entity.getServiceItem().getId() : null)
-                .serviceItemName(entity.getServiceItem() != null ? entity.getServiceItem().getName() : null)
+//                .serviceItemName(entity.getServiceItem() != null ? entity.getServiceItem().getName() : null)
                 .appointmentDate(entity.getAppointmentDate())
                 .processedAt(entity.getProcessedAt())
                 .createdAt(entity.getCreatedAt())

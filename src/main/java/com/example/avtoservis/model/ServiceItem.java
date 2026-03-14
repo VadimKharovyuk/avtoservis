@@ -1,11 +1,15 @@
 package com.example.avtoservis.model;
 
+import com.example.avtoservis.enums.Language;
 import com.example.avtoservis.enums.ServiceCategory;
 import jakarta.persistence.*;
 import lombok.*;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
 
 @Entity
 @AllArgsConstructor
@@ -20,10 +24,6 @@ public class ServiceItem {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(nullable = false)
-    private String name;
-
-    private String description;
 
     @Column(nullable = false, precision = 10, scale = 2)
     private BigDecimal price;
@@ -35,15 +35,7 @@ public class ServiceItem {
     @Column(nullable = false)
     private ServiceCategory category;
 
-    // --- SEO ---
-    @Column(unique = true)
-    private String slug;  // "vymena-motoroveho-oleje" для URL /sluzby/vymena-motoroveho-oleje
 
-    @Column(length = 160)
-    private String metaTitle;  // <title> для страницы услуги
-
-    @Column(length = 300)
-    private String metaDescription;  // <meta name="description">
 
     // --- Изображения ---
     @Column(length = 1000)
@@ -51,9 +43,6 @@ public class ServiceItem {
 
     @Column(length = 1000)
     private String imageId;
-
-    @Column(length = 500)
-    private String imageAlt;  // alt-текст для SEO изображений
 
 
     @Builder.Default
@@ -69,6 +58,29 @@ public class ServiceItem {
     protected void onCreate() {
         this.createdAt = LocalDateTime.now();
 
+    }
+
+    // --- Переклади ---
+    @OneToMany(mappedBy = "serviceItem", cascade = CascadeType.ALL, orphanRemoval = true)
+    @Builder.Default
+    private List<ServiceItemTranslation> translations = new ArrayList<>();
+
+    // --- Хелпери ---
+    public Optional<ServiceItemTranslation> getTranslation(Language language) {
+        return translations.stream()
+                .filter(t -> t.getLanguage() == language)
+                .findFirst();
+    }
+
+    public ServiceItemTranslation getTranslationOrDefault(Language language) {
+        return getTranslation(language)
+                .orElseGet(() -> getTranslation(Language.CS)
+                        .orElse(null));
+    }
+
+    public void addTranslation(ServiceItemTranslation translation) {
+        translation.setServiceItem(this);
+        translations.add(translation);
     }
 
 

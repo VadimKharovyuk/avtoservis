@@ -1,6 +1,4 @@
-package com.example.avtoservis.dto;
-
-import com.example.avtoservis.dto.ServiceItemTranslation.ServiceItemTranslationDto;
+package com.example.avtoservis.dto.ServiceItemTranslation;
 import com.example.avtoservis.enums.ServiceCategory;
 import lombok.*;
 
@@ -30,7 +28,7 @@ public class ServiceItemResponseDto {
     // Всі переклади (для адмінки)
     private List<ServiceItemTranslationDto> translations;
 
-    // Поточна мова (для публічної частини — заповнює маппер)
+    // Поточна мова (для публічної частини)
     private String name;
     private String description;
     private String slug;
