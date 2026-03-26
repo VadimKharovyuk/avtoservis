@@ -1,5 +1,4 @@
 package com.example.avtoservis.maper;
-
 import com.example.avtoservis.dto.ServiceItemCreateDto;
 import com.example.avtoservis.dto.ServiceItemResponseDto;
 import com.example.avtoservis.dto.ServiceItemTranslation.ServiceItemTranslationDto;
@@ -51,21 +50,39 @@ public class ServiceItemMapper {
         }
     }
 
-    // Для адмінки — всі переклади
-    public ServiceItemResponseDto toResponse(ServiceItem entity) {
-        return ServiceItemResponseDto.builder()
-                .id(entity.getId())
-                .price(entity.getPrice())
-                .priceFrom(entity.isPriceFrom())
-                .category(entity.getCategory())
-                .categoryDisplayName(entity.getCategory().getDisplayName())
-                .imageUrl(entity.getImageUrl())
-                .views(entity.getViews())
-                .active(entity.isActive())
-                .createdAt(entity.getCreatedAt())
-                .translations(toTranslationDtoList(entity.getTranslations()))
-                .build();
-    }
+//    // Для адмінки — всі переклади
+//    public ServiceItemResponseDto toResponse(ServiceItem entity) {
+//        return ServiceItemResponseDto.builder()
+//                .id(entity.getId())
+//                .price(entity.getPrice())
+//                .priceFrom(entity.isPriceFrom())
+//                .category(entity.getCategory())
+//                .categoryDisplayName(entity.getCategory().getDisplayName())
+//                .imageUrl(entity.getImageUrl())
+//                .views(entity.getViews())
+//                .active(entity.isActive())
+//                .createdAt(entity.getCreatedAt())
+//                .translations(toTranslationDtoList(entity.getTranslations()))
+//                .build();
+//    }
+public ServiceItemResponseDto toResponse(ServiceItem entity) {
+    ServiceItemTranslation uk = entity.getTranslationOrDefault(Language.UK);
+
+    return ServiceItemResponseDto.builder()
+            .id(entity.getId())
+            .name(uk != null ? uk.getName() : "—")
+            .slug(uk != null ? uk.getSlug() : null)
+            .price(entity.getPrice())
+            .priceFrom(entity.isPriceFrom())
+            .category(entity.getCategory())
+            .categoryDisplayName(entity.getCategory().getDisplayName())
+            .imageUrl(entity.getImageUrl())
+            .views(entity.getViews())
+            .active(entity.isActive())
+            .createdAt(entity.getCreatedAt())
+            .translations(toTranslationDtoList(entity.getTranslations()))
+            .build();
+}
 
     // Для публічної частини — одна мова
     public ServiceItemResponseDto toResponse(ServiceItem entity, Language language) {

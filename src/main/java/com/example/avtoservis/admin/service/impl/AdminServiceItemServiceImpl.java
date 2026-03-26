@@ -113,7 +113,7 @@ public class AdminServiceItemServiceImpl implements AdminServiceItemService {
     @Override
     @Transactional(readOnly = true)
     public PageResponse<ServiceItemResponseDto> getAll(Pageable pageable) {
-        Page<ServiceItem> entityPage = serviceItemRepository.findAll(pageable);
+        Page<ServiceItem> entityPage = serviceItemRepository.findAllWithTranslations(pageable);
         Page<ServiceItemResponseDto> page = entityPage.map(serviceItemMapper::toResponse);
         return PageResponse.from(page);
     }

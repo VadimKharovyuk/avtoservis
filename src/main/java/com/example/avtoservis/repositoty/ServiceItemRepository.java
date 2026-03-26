@@ -2,6 +2,7 @@ package com.example.avtoservis.repositoty;
 
 import com.example.avtoservis.model.ServiceItem;
 import org.jspecify.annotations.Nullable;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
@@ -23,6 +24,10 @@ public interface ServiceItemRepository extends JpaRepository<ServiceItem, Long> 
 
 
     List<ServiceItem> findByActiveTrueOrderByCreatedAtDesc();
+
+
+    @Query("SELECT s FROM ServiceItem s LEFT JOIN FETCH s.translations")
+    Page<ServiceItem> findAllWithTranslations(Pageable pageable);
 
 
     @Modifying
