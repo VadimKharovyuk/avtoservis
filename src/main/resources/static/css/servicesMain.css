@@ -216,3 +216,51 @@
     opacity: 1;
     transform: translateY(0);
 }
+
+
+    /* ── View All Services Button ── */
+    .btn-view-all {
+        display: inline-flex;
+        align-items: center;
+        gap: 10px;
+        padding: 14px 36px;
+        border-radius: 12px;
+        background: transparent;
+        border: 1px solid rgba(249,115,22,0.25);
+        color: var(--accent);
+        font-size: 0.9rem;
+        font-weight: 600;
+        letter-spacing: 0.3px;
+        text-decoration: none;
+        transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        position: relative;
+        overflow: hidden;
+    }
+
+    .btn-view-all::before {
+        content: '';
+        position: absolute;
+        inset: 0;
+        background: rgba(249,115,22,0.06);
+        opacity: 0;
+        transition: opacity 0.4s;
+    }
+
+    .btn-view-all:hover {
+        border-color: rgba(249,115,22,0.5);
+        color: #fff;
+        box-shadow: 0 8px 32px rgba(249,115,22,0.12);
+        transform: translateY(-2px);
+    }
+
+    .btn-view-all:hover::before {
+        opacity: 1;
+    }
+
+    .btn-view-all i {
+        transition: transform 0.3s ease;
+    }
+
+    .btn-view-all:hover i {
+        transform: translateX(4px);
+    }

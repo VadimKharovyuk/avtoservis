@@ -349,6 +349,14 @@
             <p class="empty-state" th:text="#{services.empty}">Послуги незабаром з'являться.</p>
         </div>
 
+        <div class="text-center mt-5 reveal" th:if="${!#lists.isEmpty(items)}">
+            <a th:href="@{'/' + ${currentLang.code} + '/sluzby'}"
+               class="btn-view-all">
+                <span th:text="#{services.btn.viewAll}">Переглянути всі послуги</span>
+                <i class="bi bi-arrow-right"></i>
+            </a>
+        </div>
+
     </div>
 </section>
 

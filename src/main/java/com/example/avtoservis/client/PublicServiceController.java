@@ -70,6 +70,20 @@ public class PublicServiceController {
         return "public/booking";
     }
 
+    @GetMapping("/{lang}/sluzby")
+    public String allServices(@PathVariable String lang,
+                              Model model,
+                              HttpServletRequest request,
+                              HttpServletResponse response) {
+        Language language = Language.fromCode(lang);
+        localeResolver.setLocale(request, response, language.toLocale());
+
+        model.addAttribute("services", publicServiceItemService.getAllActive(language));
+        model.addAttribute("currentLang", language);
+        model.addAttribute("languages", Language.getEnabledLanguages());
+        return "public/services";
+    }
+
 
     // ── Booking submit ──
     @PostMapping("/{lang}/objednat")
