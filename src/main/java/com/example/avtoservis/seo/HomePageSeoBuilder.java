@@ -55,7 +55,7 @@ public class HomePageSeoBuilder {
                 .ogDescription(texts.description)
                 .ogUrl(langUrl)
                 .ogType("website")
-                .ogImage(baseUrl + "/images/og-image.jpg")
+                .ogImage(baseUrl + "/images/Logo-image.jpg")
                 .ogImageAlt("EN-motors — autoservis Brno")
                 .ogSiteName("EN-motors")
                 .ogLocale(texts.locale)
@@ -63,7 +63,7 @@ public class HomePageSeoBuilder {
                 .twitterCard("summary_large_image")
                 .twitterTitle(texts.title)
                 .twitterDescription(texts.description)
-                .twitterImage(baseUrl + "/images/og-image.jpg")
+                .twitterImage(baseUrl + "/images/Logo-image.jpg")
                 .twitterImageAlt("EN-motors — autoservis Brno")
 
                 .build();
