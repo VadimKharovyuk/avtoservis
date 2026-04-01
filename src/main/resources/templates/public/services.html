@@ -307,7 +307,7 @@
 
             <p class="sp-card-desc"
                th:if="${service.description}"
-               th:text="${service.description}">Popis služby...</p>
+               th:utext="${service.description}">Popis služby...</p>
 
             <!-- Price -->
             <div class="sp-price" th:if="${service.price != null}">

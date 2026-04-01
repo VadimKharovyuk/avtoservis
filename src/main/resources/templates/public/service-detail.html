@@ -52,9 +52,8 @@
 
             <!-- Description -->
             <div th:if="${service.description}" class="mb-4 fade-in fade-in-d3">
-                <p class="detail-desc" th:text="${service.description}"></p>
+                <div class="detail-desc" th:utext="${service.description}"></div>
             </div>
-
             <!-- Feature Cards -->
             <div class="row g-3 mb-4 fade-in fade-in-d4">
                 <div class="col-4">
